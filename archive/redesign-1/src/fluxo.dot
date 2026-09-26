@@ -1,0 +1,193 @@
+// FONTE CANÔNICA — editar este arquivo, nunca o SVG gerado.
+// Fonte operacional: 13 documentos de atendimento + regras operacionais do CRC.
+// IDs estáveis sustentam busca, referências, testes e links diretos.
+// Não adicionar tutoriais, URLs, campos ou perguntas técnicas individuais.
+digraph AtendimentoCRC {
+  graph [rankdir=TB, bgcolor="#ffffff", pad="0.35", nodesep="0.35", ranksep="0.55", splines=polyline, compound=true, newrank=true, fontname="Arial", fontsize=16, outputorder=edgesfirst];
+  node [shape=box, style="rounded,filled", color="#b3c5d5", fillcolor="#f4f8fc", fontcolor="#17354c", fontname="Arial", fontsize=13, margin="0.17,0.12", penwidth=1.1];
+  edge [fontname="Arial", fontsize=10, color="#6b8398", fontcolor="#415e75", arrowsize=0.65];
+
+  crc [label="Atendimento CRC — 3131-2471", fillcolor="#133e55", fontcolor="white", fontsize=19];
+  whatsapp [label="WhatsApp"];
+  interpretar [label="OmniChat interpreta a demanda"];
+  assunto [label="Identifica o assunto"];
+  consultar [label="Consulta a documentação", fillcolor="#e8f3ef", color="#7aaf9b"];
+  contexto [label="Contexto suficiente?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+  esclarecer [label="Solicitar informação necessária"];
+  topico [label="Selecionar procedimento", fillcolor="#e8f3ef", color="#7aaf9b", ordering=out];
+
+  crc -> whatsapp -> interpretar -> assunto -> consultar -> contexto;
+  contexto -> esclarecer [label="Não"];
+  esclarecer -> assunto [label="Complementar contexto", constraint=false];
+  contexto -> topico [label="Sim"];
+
+  // A — um único caminho por credencial, reutilizado por B e C.
+  subgraph cluster_acesso {
+    a_saida [shape=point, width=0.055, label="", fillcolor="#6b8398", color="#6b8398"];
+    label="A · Acesso, credenciais e autenticação";
+    style="rounded,filled"; color="#adc8dc"; fillcolor="#f5f9fd"; margin=18;
+    a_tipo [label="Identificar tipo de acesso", fillcolor="#dcecf8"];
+    a_academica [label="Credencial acadêmica\nFluxo compartilhado", tooltip="codigodepessoa@pucminas.edu.br · Canvas, Teams, Office 365, Wi-Fi e computadores acadêmicos. Considerar os 15 minutos documentados após reset."];
+    a_sga [label="SGA / PUC Mobile\nIdentificar vínculo quando necessário"];
+    a_mail [label="PUC Mail\nPrimeiro acesso ou recuperação"];
+    a_admin [label="Senha administrativa?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a", tooltip="@pucminas.br · Senha da rede e senha de sistemas são distintas."];
+    a_sistemas [label="Orientar reset de sistemas\nPortal INTRA"];
+    a_rede [label="Orientar reset da rede\nPortal INTRA", tooltip="Conta administrativa bloqueada também passa por esta tentativa antes de CRC."];
+    a_reset [label="Reset concluído?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+    a_reteste [label="Testar novamente o acesso", tooltip="Se a conta continuar bloqueada após reset concluído, o resultado é Não resolvido → CRC."];
+    a_mfa [label="MFA\nVerificações documentadas"];
+    a_recuperar [label="Perdeu ou trocou\no dispositivo?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+    a_backup [label="Possui backup?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+    a_restaurar [label="Verificar possibilidade\nde recuperação"];
+    a_configurar [label="Orientar configuração\ne autenticação"];
+    a_manual [label="Reset manual necessário?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+
+    a_tipo -> a_academica [label="Acadêmico"];
+    a_tipo -> a_sga [label="SGA"];
+    a_tipo -> a_mail [label="PUC Mail"];
+    a_tipo -> a_admin [label="Administrativo"];
+    a_tipo -> a_mfa [label="MFA"];
+    a_admin -> a_sistemas [label="Sistemas"];
+    a_admin -> a_rede [label="Rede ou conta bloqueada"];
+    a_rede -> a_reset;
+    a_reset -> a_reteste [label="Sim"];
+    a_mfa -> a_recuperar;
+    a_recuperar -> a_configurar [label="Não"];
+    a_recuperar -> a_backup [label="Sim"];
+    a_backup -> a_restaurar [label="Sim"];
+    a_backup -> a_manual [label="Não"];
+    a_manual -> a_configurar [label="Não"];
+  }
+
+  { rank=same; c_academico; c_visitante; c_funcionario; c_evento; }
+  // B — funcionamento é separado de credenciais, sem árvore por aplicativo.
+  subgraph cluster_plataformas {
+    b_saida [shape=point, width=0.055, label="", fillcolor="#6b8398", color="#6b8398"];
+    label="B · Plataformas e aplicativos";
+    style="rounded,filled"; color="#b7c4e0"; fillcolor="#f7f8fd"; margin=18;
+    b_entrada [label="SGA · Canvas · Teams\nOffice 365 · PUC Mobile · PUC Mail", fillcolor="#e7eafb"];
+    b_login [label="Problema de credencial?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+    b_uso [label="Orientar acesso, uso\ne disponibilidade", tooltip="Canvas: conta de calouro na semana de início das aulas. Office: licença online. PUC Mobile: credencial do SGA. PUC Mail: encaminhamento de mensagens conforme documentação."];
+    b_entrada -> b_login;
+    b_login -> b_uso [label="Não"];
+  }
+
+  // C — visitante/funcionário usam o mesmo bloco de orientação CSC.
+  subgraph cluster_rede {
+    c_saida [shape=point, width=0.055, label="", fillcolor="#6b8398", color="#6b8398"];
+    label="C · Rede e conectividade";
+    style="rounded,filled"; color="#aed2ca"; fillcolor="#f4faf8"; margin=18;
+    c_tipo [label="Identificar conexão", fillcolor="#dff1eb"];
+    c_wifi [label="Identificar modalidade Wi-Fi", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+    c_academico [label="Orientar configuração\ndo Wi-Fi acadêmico"];
+    c_visitante [label="Orientar solicitação\npara visitantes"];
+    c_funcionario [label="Orientar solicitação\ncom autorização da chefia"];
+    c_evento [label="Wi-Fi para eventos", fillcolor="#ffebe5", color="#bd7968"];
+    c_vpn [label="Orientar VPN GlobalProtect\nRede administrativa"];
+    c_auth [label="Falha de credencial / MFA?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+    c_tipo -> c_wifi [label="Wi-Fi"];
+    c_tipo -> c_vpn [label="VPN"];
+    c_wifi -> c_academico [label="Acadêmico"];
+    c_wifi -> c_visitante [label="Visitantes"];
+    c_wifi -> c_funcionario [label="Funcionários"];
+    c_wifi -> c_evento [label="Eventos"];
+    c_academico -> c_auth;
+    c_vpn -> c_auth;
+  }
+
+  // D — corpo docente OU técnico administrativo; acesso sempre administrativo.
+  // Prazo insuficiente volta à data. Não é falha terminal nem fila automática.
+  subgraph cluster_servicos {
+    d_saida [shape=point, width=0.055, label="", fillcolor="#6b8398", color="#6b8398"];
+    label="D · Solicitações e serviços";
+    style="rounded,filled"; color="#d7c497"; fillcolor="#fffcf4"; margin=18;
+    d_tipo [label="Identificar solicitação", fillcolor="#f9edcd"];
+    d_lab [label="Reserva de LAB\nCampus Lourdes", tooltip="Solicitantes: corpo docente ou técnico administrativo. Conta do formulário: @pucminas.br. Casos fora da documentação → CRC."];
+    d_software [label="Haverá software?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+    d_3 [label="Mínimo de 3 dias úteis"];
+    d_10 [label="Mínimo de 10 dias úteis"];
+    d_prazo [label="Prazo atendido?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+    d_data [label="Informar prazo mínimo\ne solicitar nova data"];
+    d_formulario [label="Orientar formulário de reserva\nConta administrativa @pucminas.br"];
+    d_csc [label="Orientar abertura\nde solicitação no CSC"];
+    d_tipo -> d_lab [label="Reserva"];
+    d_tipo -> d_csc [label="CSC"];
+    d_lab -> d_software;
+    d_software -> d_3 [label="Não"];
+    d_software -> d_10 [label="Sim"];
+    d_3 -> d_prazo;
+    d_10 -> d_prazo;
+    d_prazo -> d_formulario [label="Sim"];
+    d_prazo -> d_data [label="Não"];
+    d_data -> d_prazo [label="Nova data · revalidar", constraint=false];
+  }
+
+  // E — sintomas mudam o checklist; projetor é a única exceção de destino.
+  subgraph cluster_sala {
+    e_saida [shape=point, width=0.055, label="", fillcolor="#6b8398", color="#6b8398"];
+    label="E · Suporte em Sala de Aula";
+    style="rounded,filled"; color="#d6becd"; fillcolor="#fcf7fa"; margin=18;
+    e_sintoma [label="Identificar sintoma / equipamento", fillcolor="#f2e4ed"];
+    e_energia [label="Não liga\nVerificar alimentação"];
+    e_imagem [label="Liga sem imagem\nVerificar monitor / HDMI / VGA"];
+    e_conexao [label="Falha de conexão\nVerificar rede / confiança do domínio"];
+    e_equipamento [label="Falha em equipamento\nIdentificar avaria"];
+    e_projetor [label="Projetor\nOrientar quando documentado"];
+    e_sintoma -> e_energia [label="Energia"];
+    e_sintoma -> e_imagem [label="Imagem"];
+    e_sintoma -> e_conexao [label="Conexão"];
+    e_sintoma -> e_equipamento [label="Equipamento"];
+    e_sintoma -> e_projetor [label="Projetor"];
+  }
+
+  // Uma única espinha de atendimento e conclusão.
+  orientar [label="Orientar / realizar\nas verificações documentadas", fillcolor="#e3f2eb", color="#75a993", fontsize=16];
+  resolveu [label="Resolveu?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a", fontsize=17];
+  fim [label="Encerrar atendimento", fillcolor="#daf0e3", color="#4c9773", fontsize=16];
+  fila_crc [label="Fila humana do CRC", fillcolor="#ffebe5", color="#bd7968", fontsize=16];
+  infraestrutura [label="Infraestrutura — 3131-2804", fillcolor="#f2e3ee", color="#a77598", fontsize=16];
+
+  topico -> a_tipo [label="A"];
+  topico -> b_entrada [label="B"];
+  topico -> c_tipo [label="C"];
+  topico -> d_tipo [label="D"];
+  topico -> e_sintoma [label="E"];
+  consultar -> fila_crc [label="Caso não coberto / procedimento insuficiente", constraint=false];
+  b_login -> a_tipo [label="Sim · reutilizar", constraint=false, color="#5688b4", style=dashed];
+  c_auth -> a_tipo [label="Sim · reutilizar", constraint=false, color="#5688b4", style=dashed];
+  c_visitante -> d_csc [label="CSC", constraint=false];
+  c_funcionario -> d_csc [label="CSC", constraint=false];
+  c_evento -> fila_crc;
+  a_reset -> fila_crc [label="Não · não foi possível concluir"];
+  a_manual -> fila_crc [label="Sim · reset manual"];
+  a_academica -> a_saida;
+  a_sga -> a_saida;
+  a_mail -> a_saida;
+  a_sistemas -> a_saida;
+  a_reteste -> resolveu [label="Verificar acesso / bloqueio"];
+  a_configurar -> a_saida;
+  a_restaurar -> a_saida;
+  b_uso -> b_saida;
+  c_auth -> c_saida [label="Não"];
+  d_formulario -> d_saida;
+  d_csc -> d_saida;
+  e_energia -> e_saida;
+  e_imagem -> e_saida;
+  e_conexao -> e_saida;
+  e_equipamento -> e_saida;
+  e_projetor -> infraestrutura;
+  a_saida -> orientar;
+  b_saida -> orientar;
+  c_saida -> orientar;
+  d_saida -> orientar;
+  e_saida -> orientar;
+  orientar -> resolveu;
+  resolveu -> fim [label="Sim"];
+  resolveu -> fila_crc [label="Não / continua bloqueada"];
+
+  { rank=same; a_saida; b_saida; c_saida; d_saida; e_saida; }
+  // Restrições invisíveis só organizam o desenho; não representam atendimento.
+  { rank=same; a_tipo; b_entrada; c_tipo; d_tipo; e_sintoma; }
+  a_tipo -> b_entrada -> c_tipo -> d_tipo -> e_sintoma [style=invis, weight=100];
+  { rank=same; fim; fila_crc; infraestrutura; }
+}

@@ -1,0 +1,77 @@
+// FONTE CANÔNICA. O SVG mostra o atendimento, não os tutoriais.
+// Cinco blocos de conhecimento; apenas cinco exceções têm caminhos próprios.
+// Tópicos sem nó conservam seu ID no catalog.json via nodeId (busca e links).
+digraph AtendimentoCRC {
+ graph [rankdir=TB, bgcolor="white", pad=.3, nodesep=.35, ranksep=.48, splines=polyline, newrank=true, fontname="Arial", fontsize=14, outputorder=edgesfirst];
+ node [shape=box, style="rounded,filled", color="#afc3d2", fillcolor="#f4f8fc", fontcolor="#17354c", fontname="Arial", fontsize=13, margin=".18,.13"];
+ edge [fontname="Arial", fontsize=10, color="#78909f", fontcolor="#415e75", arrowsize=.65];
+ crc [label="Atendimento CRC — 3131-2471", fillcolor="#133e55", fontcolor="white", fontsize=18];
+ whatsapp [label="WhatsApp"];
+ interpretar [label="OmniChat interpreta a demanda\nIdentifica a necessidade"];
+ consultar [ordering=out, label="Consulta a documentação correspondente", fillcolor="#e3f2eb"];
+ crc -> whatsapp -> interpretar -> consultar;
+
+ // Mapa da base: assuntos não são menus nem triagem obrigatória por perfil.
+ subgraph cluster_base {
+ label="BASE DE CONHECIMENTO · detalhes e referências na busca / painel";
+ style="rounded"; color="#ccd8df"; margin=18;
+ a_tipo [label="Acesso e credenciais\nSGA · Senhas · MFA\nPUC Mail · Administrativo", fillcolor="#dcecf8"];
+ b_entrada [label="Plataformas e aplicativos\nCanvas · Teams · Office 365\nPUC Mobile · SGA · PUC Mail", fillcolor="#e7eafb"];
+ c_tipo [label="Rede e conectividade\nWi-Fi · VPN", fillcolor="#dff1eb"];
+ d_tipo [label="Solicitações e serviços\nReserva de LAB · CSC", fillcolor="#f9edcd"];
+ e_sintoma [label="Suporte em Sala de Aula\nComputador · Rede\nEquipamentos · Projetor", fillcolor="#f2e4ed"];
+ {rank=same; a_tipo; b_entrada; c_tipo; d_tipo; e_sintoma;}
+ a_tipo -> b_entrada -> c_tipo -> d_tipo -> e_sintoma [style=invis, weight=100];
+ }
+ consultar -> {a_tipo b_entrada c_tipo d_tipo e_sintoma} [style=dashed, arrowhead=none];
+ // Linhas pontilhadas representam cobertura documental, não cinco fluxos.
+ {a_tipo b_entrada c_tipo d_tipo e_sintoma} -> orientar [style=dashed, arrowhead=none];
+ orientar [label="Aplica a orientação documentada", fillcolor="#e3f2eb", color="#75a993", fontsize=16];
+ resolveu [label="Resolveu?", shape=diamond, fillcolor="#fff4d9", color="#c8a45a"];
+ fim [label="Encerrar atendimento", fillcolor="#daf0e3", color="#4c9773"];
+ fila_crc [label="Fila humana do CRC", fillcolor="#ffebe5", color="#bd7968"];
+ orientar -> resolveu;
+ resolveu -> fim [label="Sim"];
+ resolveu -> fila_crc [label="Não"];
+
+ // Exceções: apenas decisões que mudam regra operacional ou destino.
+ a_rede [label="Conta bloqueada\nReset da senha da rede"];
+ a_reteste [label="Reset concluído\nTestar novamente"];
+ a_bloqueada [label="Continua bloqueada?", shape=diamond, fillcolor="#fff4d9"];
+ a_rede -> a_reteste -> a_bloqueada;
+ a_tipo -> a_rede [label="Conta bloqueada"];
+ a_bloqueada -> fim [label="Não · resolvido"];
+ a_bloqueada -> fila_crc [label="Sim"];
+ a_mfa [label="Problema de MFA\nRecuperação possível?", shape=diamond, fillcolor="#fff4d9", tooltip="Verificar procedimento documentado e backup disponível antes de encaminhar."];
+ a_configurar [label="Orientar recuperação\nou configuração"];
+ a_mfa -> a_configurar [label="Sim"];
+ a_tipo -> a_mfa [label="MFA"];
+ a_mfa -> fila_crc [label="Não / reset manual"];
+ a_configurar -> resolveu;
+ d_software [label="Reserva de LAB\nHaverá software?", shape=diamond, fillcolor="#fff4d9", tooltip="Corpo Docente ou Corpo Técnico Administrativo. Campus Lourdes."];
+ d_3 [label="Mínimo de 3 dias úteis"];
+ d_10 [label="Mínimo de 10 dias úteis"];
+ d_prazo [label="Prazo atendido?", shape=diamond, fillcolor="#fff4d9", tooltip="Validar automaticamente a data conforme antecedência exigida."];
+ d_data [label="Informar prazo mínimo\ne solicitar nova data"];
+ d_formulario [label="Orientar formulário\nAdministrativo @pucminas.br"];
+ d_software -> d_3 [label="Não"];
+ d_software -> d_10 [label="Sim"];
+ d_3 -> d_prazo; d_10 -> d_prazo;
+ d_prazo -> d_formulario [label="Sim"];
+ d_prazo -> d_data [label="Não"];
+ d_data -> d_prazo [label="Nova data · revalidar", constraint=false];
+ d_tipo -> d_software [label="Reserva"];
+ d_formulario -> resolveu;
+ c_evento [label="Wi-Fi para eventos", fillcolor="#ffebe5"];
+ c_tipo -> c_evento [label="Eventos"];
+ c_evento -> fila_crc;
+ e_projetor [label="Projetor", fillcolor="#f2e4ed", tooltip="Orientar quando documentado e encaminhar à Infraestrutura."];
+ infraestrutura [label="Infraestrutura — 3131-2804", fillcolor="#f2e3ee", color="#a77598"];
+ e_sintoma -> e_projetor;
+ e_projetor -> infraestrutura;
+ {rank=same; a_rede; a_mfa; orientar; c_evento; d_software; e_projetor;}
+ a_rede -> a_mfa -> orientar -> c_evento -> d_software -> e_projetor [style=invis, weight=100];
+ {rank=same; a_reteste; a_configurar; d_3; d_10;}
+ {rank=same; a_bloqueada; d_prazo;}
+ {rank=same; fim; fila_crc; infraestrutura;}
+}

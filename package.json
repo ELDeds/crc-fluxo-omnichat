@@ -1,0 +1,14 @@
+{
+  "name": "omnichat-crc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fluxograma único do atendimento OmniChat do CRC",
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "test": "node --test tests/flow.test.cjs",
+    "check": "npm run build && npm test",
+    "preview": "node scripts/serve.cjs"
+  },
+  "engines": {"node": ">=22"},
+  "devDependencies": {"@viz-js/viz": "3.25.0"}
+}

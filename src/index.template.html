@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Fluxograma único e interativo do atendimento OmniChat do Centro de Recursos Computacionais.">
+<title>CRC · Arquitetura do atendimento OmniChat</title>
+<!-- STYLES -->
+</head>
+<body>
+<header class="masthead">
+ <div class="brand"><span class="brand-mark" aria-hidden="true">CRC</span><div><div class="eyebrow">CENTRO DE RECURSOS COMPUTACIONAIS</div><h1>Arquitetura do atendimento <span>OmniChat</span></h1></div></div>
+ <div class="contact"><span>Atendimento CRC</span><strong>3131-2471</strong></div>
+</header>
+<div class="workspace-bar">
+ <div class="intro"><span class="live-dot" aria-hidden="true"></span><strong>Visão integral</strong><span class="muted">5 áreas · 5 exceções · um único fluxo</span></div>
+ <div class="legend" aria-label="Legenda"><span><i class="context"></i>Conhecimento</span><span><i class="decision"></i>Decisão</span><span><i class="action"></i>Orientação</span><span><i class="handoff"></i>Encaminhamento</span></div>
+</div>
+<div class="toolbar">
+ <div class="search-box">
+  <span class="search-icon" aria-hidden="true">⌕</span><label class="sr-only" for="search">Buscar tópico</label>
+  <input id="search" type="search" autocomplete="off" placeholder="Buscar tópico: MFA, reserva, senha…" aria-controls="search-results" aria-expanded="false">
+  <kbd aria-hidden="true">/</kbd><div id="search-results" class="search-results" hidden></div>
+ </div>
+ <div class="controls"><button id="overview" class="primary" title="Ajustar todo o fluxograma à tela (0)">Visão geral</button><div class="zoom-group"><button id="zoom-out" aria-label="Diminuir zoom">−</button><output id="zoom-level" aria-label="Zoom atual">—</output><button id="zoom-in" aria-label="Aumentar zoom">+</button></div><button id="fullscreen">Tela cheia</button><button id="export-svg" title="Baixar o fluxograma vetorial">SVG ↓</button><button id="print">PDF / imprimir</button></div>
+</div>
+<main id="stage">
+ <div id="viewport" tabindex="0" aria-label="Fluxograma interativo. Arraste para mover; use mais e menos para zoom e zero para visão geral.">
+ <!-- DIAGRAM -->
+ </div>
+ <aside id="inspector" class="inspector" hidden aria-label="Informações do tópico">
+  <button id="close-inspector" class="close" aria-label="Fechar informações">×</button><div class="eyebrow">CONTEXTO DO BLOCO</div><h2 id="topic-title"></h2><p id="topic-detail"></p><p class="sources-label">Referências</p><ul id="topic-sources"></ul>
+ </aside>
+ <div class="canvas-hint">Arraste para explorar <span>·</span> Role para ampliar <span>·</span> Clique em um bloco para consultar sua referência</div>
+ <noscript><div class="no-script">O fluxograma completo está abaixo. Ative JavaScript para zoom, arraste e busca.</div></noscript>
+</main>
+<footer><span>WhatsApp → orientação documental → solução ou CRC <span class="footer-exception">· Projetor: Infraestrutura — 3131-2804</span></span><span><span class="revision">V1.0 — versão aprovada</span><a href="historico/">Histórico de versões</a><a href="pendencias.md">Pendências</a><a href="referencias.md">Referências</a><a href="fluxo.dot" download>Fonte .dot</a></span></footer>
+<div id="announce" class="sr-only" aria-live="polite"></div>
+<!-- APP -->
+</body></html>

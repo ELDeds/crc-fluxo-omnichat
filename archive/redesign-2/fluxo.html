@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Fluxograma único e interativo do atendimento OmniChat do Centro de Recursos Computacionais.">
+<title>CRC · Arquitetura do atendimento OmniChat</title>
+<style>/* Interface estática: só o viewport é transformado; nenhuma área é filtrada. */
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#213d4e;background:#f4f7f8;font-synthesis:none;--ink:#163d50;--accent:#217767;--line:#dbe4e8}*{box-sizing:border-box}body{margin:0;height:100dvh;display:flex;flex-direction:column;overflow:hidden}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{cursor:pointer;border:1px solid #cedbe1;background:#fff;border-radius:7px;padding:9px 12px;color:var(--ink);font-size:13px;font-weight:550;white-space:nowrap}button:hover{background:#edf4f5;border-color:#8aaeb2}button:focus-visible,input:focus-visible,a:focus-visible,#viewport:focus-visible{outline:3px solid #4db2a0;outline-offset:2px}.masthead{background:var(--ink);color:white;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:16px}.brand-mark{display:grid;place-items:center;background:#2b5769;border:1px solid #537483;border-radius:11px;width:54px;height:54px;font-size:17px;font-weight:800;letter-spacing:-.03em}.eyebrow{font-size:10px;letter-spacing:.15em;font-weight:650;color:#8ca8b4}h1{font-size:21px;letter-spacing:-.02em;font-weight:550;margin:4px 0 0}h1 span{font-weight:350;color:#bfd5dd;margin-left:6px}.contact{text-align:right;display:flex;flex-direction:column;font-size:11px;color:#bfd5dd}.contact strong{white-space:nowrap;font-size:20px;color:white;font-weight:550;letter-spacing:.03em}.workspace-bar{display:flex;justify-content:space-between;align-items:center;padding:15px 28px 8px;gap:15px}.intro{display:flex;align-items:center;gap:10px;font-size:13px}.live-dot{width:7px;height:7px;border-radius:50%;background:#297e69}.muted{color:#778c97;font-size:12px}.legend{display:flex;gap:17px;font-size:11px;color:#647c8a}.legend span{display:flex;align-items:center;gap:6px}.legend i{width:9px;height:9px;border-radius:3px;border:1px solid #afc3d1}.legend .context{background:#e2edf6}.legend .decision{background:#fff0bf;border-color:#c8a45a;transform:rotate(45deg);border-radius:1px}.legend .action{background:#dcefe6;border-color:#7aaf9b}.legend .handoff{background:#ffe7de;border-color:#bd7968}.toolbar{padding:9px 28px 15px;display:flex;justify-content:space-between;gap:16px;align-items:center}.search-box{position:relative;max-width:460px;flex:1;min-width:220px;display:flex;align-items:center;background:white;border:1px solid #cedbe1;border-radius:8px;padding:0 12px;gap:8px}.search-icon{font-size:25px;color:#607e8b;line-height:1}#search{border:0;min-width:0;width:100%;padding:11px 0;background:transparent;color:var(--ink);font-size:13px}#search:focus{outline:none}.search-box:focus-within{outline:2px solid #338b7b;outline-offset:1px}kbd{font:11px system-ui;border:1px solid #e1e8ec;padding:0 5px;border-radius:3px;color:#93a4ad}.controls{display:flex;align-items:center;gap:7px}.primary{background:var(--accent);color:white;border-color:var(--accent)}.primary:hover{background:#1b6355;color:white}.zoom-group{display:flex;align-items:center;background:white;border:1px solid #cedbe1;border-radius:7px}.zoom-group button{border:0;background:transparent;font-size:17px;padding:7px 12px}#zoom-level{font-size:12px;font-variant-numeric:tabular-nums;min-width:44px;text-align:center;color:#6a808c}#stage{margin:0 16px;flex:1;min-height:150px;position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:white;box-shadow:0 4px 18px #153d4d05}#viewport{height:100%;width:100%;overflow:auto;position:relative;cursor:grab;background-image:radial-gradient(#dce6eb .8px,transparent .8px);background-size:20px 20px;touch-action:none}body.enhanced #viewport{overflow:hidden}#viewport.dragging{cursor:grabbing}#flow{display:block;max-width:none}body.enhanced #flow{position:absolute;left:0;top:0;transform-origin:0 0;user-select:none}#flow>.graph>polygon{fill:white;fill-opacity:.95}#flow .node{cursor:pointer}#flow .node:focus{outline:none}#flow .node:focus>polygon,#flow .node:focus>path,#flow .node:focus>ellipse{stroke:#238e7a;stroke-width:3px}#flow .search-match>polygon,#flow .search-match>path,#flow .search-match>ellipse{stroke:#27917b;stroke-width:3px}#flow .selected>polygon,#flow .selected>path,#flow .selected>ellipse{stroke:#cf831b;stroke-width:4px;filter:drop-shadow(0 0 6px #deaa5450)}.canvas-hint{position:absolute;left:14px;bottom:12px;border:1px solid #e1e9ed;border-radius:6px;padding:7px 10px;background:#ffffffed;color:#728995;font-size:10px;pointer-events:none}.canvas-hint span{margin:0 6px}.search-results{position:absolute;left:0;right:0;top:calc(100% + 7px);z-index:5;background:white;border:1px solid #cfdee4;border-radius:9px;box-shadow:0 8px 25px #193d5120;padding:6px;max-height:330px;overflow:auto}.search-results button{display:block;width:100%;text-align:left;border:0;white-space:normal;font-weight:500}.search-results button small{display:block;color:#7a8f9c;font-size:10px;margin-top:2px}.search-results p{margin:10px;color:#657c88;font-size:12px}.inspector{position:absolute;right:12px;top:12px;max-width:320px;width:calc(100% - 24px);padding:21px;background:#fff;border:1px solid #d4e1e7;box-shadow:0 5px 25px #14324713;border-radius:10px;z-index:2;max-height:calc(100% - 24px);overflow:auto}.inspector h2{font-size:18px;line-height:1.3;margin:9px 18px 12px 0}.inspector p{font-size:12px;line-height:1.65;margin:0 0 12px;color:#56707e}.inspector ul{font-size:11px;color:#687e8b;padding-left:17px;margin-bottom:0}.inspector .sources-label{font-size:10px;text-transform:uppercase;letter-spacing:.09em;margin-top:17px;margin-bottom:5px}.close{position:absolute;right:8px;top:6px;border:0;background:transparent;padding:3px 8px;font-size:24px;color:#8096a2}footer{display:flex;justify-content:space-between;gap:10px;padding:12px 24px;color:#748995;font-size:10px}footer>span:last-child{display:flex;gap:13px;align-items:center}footer a{color:#486d80;text-decoration:none}footer a:hover{text-decoration:underline}.revision{color:#8ba0aa}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[hidden]{display:none!important}.no-script{padding:10px;background:#fff4d9}@media(max-width:1050px){.toolbar{flex-wrap:wrap}.search-box{max-width:none}.legend{gap:9px}.footer-exception{display:none}h1{font-size:18px}}@media(max-width:680px){.masthead{padding:13px 15px;gap:10px}.brand{gap:10px}.brand-mark{width:38px;height:40px;font-size:13px}.eyebrow{font-size:8px;letter-spacing:.07em}h1{font-size:15px}h1 span{display:block;margin:0}.contact strong{font-size:16px}.workspace-bar{padding:12px 14px 3px;flex-wrap:wrap;gap:8px}.legend{font-size:9px}.toolbar{padding:10px 14px;gap:8px}.search-box{flex-basis:100%;min-width:0}.controls{width:100%;gap:5px;overflow-x:auto}.controls button{font-size:11px;padding:8px}.zoom-group button{font-size:16px}#zoom-level{min-width:32px}#stage{margin:0 8px}.canvas-hint{font-size:9px;max-width:calc(100% - 28px)}footer{padding:8px 14px;flex-wrap:wrap;font-size:9px}footer>span:first-child{display:none}.inspector{max-width:270px;max-height:48%}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}@media print{@page{size:A0 landscape;margin:10mm}html,body{display:block;height:auto;overflow:visible;background:white}.masthead,.toolbar,.workspace-bar,footer,.inspector,.canvas-hint,.no-script{display:none!important}#stage,#viewport{display:block;position:static;margin:0;padding:0;height:auto;overflow:visible!important;border:0;box-shadow:none;background:white}body.enhanced #flow,#flow{position:static!important;transform:none!important;width:100%!important;height:auto!important;max-height:805mm}.selected>path,.selected>polygon,.search-match>path,.search-match>polygon{filter:none!important}*{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header class="masthead">
+ <div class="brand"><span class="brand-mark" aria-hidden="true">CRC</span><div><div class="eyebrow">CENTRO DE RECURSOS COMPUTACIONAIS</div><h1>Arquitetura do atendimento <span>OmniChat</span></h1></div></div>
+ <div class="contact"><span>Atendimento CRC</span><strong>3131-2471</strong></div>
+</header>
+<div class="workspace-bar">
+ <div class="intro"><span class="live-dot" aria-hidden="true"></span><strong>Visão integral</strong><span class="muted">5 áreas · 5 exceções · um único fluxo</span></div>
+ <div class="legend" aria-label="Legenda"><span><i class="context"></i>Conhecimento</span><span><i class="decision"></i>Decisão</span><span><i class="action"></i>Orientação</span><span><i class="handoff"></i>Encaminhamento</span></div>
+</div>
+<div class="toolbar">
+ <div class="search-box">
+  <span class="search-icon" aria-hidden="true">⌕</span><label class="sr-only" for="search">Buscar tópico</label>
+  <input id="search" type="search" autocomplete="off" placeholder="Buscar tópico: MFA, reserva, senha…" aria-controls="search-results" aria-expanded="false">
+  <kbd aria-hidden="true">/</kbd><div id="search-results" class="search-results" hidden></div>
+ </div>
+ <div class="controls"><button id="overview" class="primary" title="Ajustar todo o fluxograma à tela (0)">Visão geral</button><div class="zoom-group"><button id="zoom-out" aria-label="Diminuir zoom">−</button><output id="zoom-level" aria-label="Zoom atual">—</output><button id="zoom-in" aria-label="Aumentar zoom">+</button></div><button id="fullscreen">Tela cheia</button><button id="export-svg" title="Baixar o fluxograma vetorial">SVG ↓</button><button id="print">PDF / imprimir</button></div>
+</div>
+<main id="stage">
+ <div id="viewport" tabindex="0" aria-label="Fluxograma interativo. Arraste para mover; use mais e menos para zoom e zero para visão geral.">
+ <svg id="flow" role="img" aria-labelledby="diagram-title diagram-description" width="1570pt" height="1110pt"
+ viewBox="0.00 0.00 1570.00 1110.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title id="diagram-title">Fluxograma único do atendimento OmniChat do CRC</title><desc id="diagram-description">Entrada pelo WhatsApp. O agente interpreta a demanda, consulta a documentação e utiliza cinco grupos de procedimentos. Se resolver, encerra; se não resolver, encaminha ao CRC. Projetor é direcionado à Infraestrutura.</desc>
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(21.6 1088.12)">
+<title>AtendimentoCRC</title>
+<polygon fill="white" stroke="none" points="-21.6,21.6 -21.6,-1088.12 1548.67,-1088.12 1548.67,21.6 -21.6,21.6"/>
+<g id="clust1" class="cluster">
+<title>cluster_base</title>
+<path fill="white" stroke="#ccd8df" d="M318.34,-639.96C318.34,-639.96 1394.34,-639.96 1394.34,-639.96 1400.34,-639.96 1406.34,-645.96 1406.34,-651.96 1406.34,-651.96 1406.34,-754.28 1406.34,-754.28 1406.34,-760.28 1400.34,-766.28 1394.34,-766.28 1394.34,-766.28 318.34,-766.28 318.34,-766.28 312.34,-766.28 306.34,-760.28 306.34,-754.28 306.34,-754.28 306.34,-651.96 306.34,-651.96 306.34,-645.96 312.34,-639.96 318.34,-639.96"/>
+<text xml:space="preserve" text-anchor="middle" x="856.34" y="-749.68" font-family="Arial" font-size="14.00">BASE DE CONHECIMENTO · detalhes e referências na busca / painel</text>
+</g>
+<!-- crc&#45;&gt;whatsapp -->
+<g id="edge1" class="edge">
+<title>crc&#45;&gt;whatsapp</title>
+<path fill="none" stroke="#78909f" d="M881.34,-1025.75C881.34,-1016.98 881.34,-1006.53 881.34,-997.21"/>
+<polygon fill="#78909f" stroke="#78909f" points="883.62,-997.38 881.34,-990.88 879.07,-997.38 883.62,-997.38"/>
+</g>
+<!-- whatsapp&#45;&gt;interpretar -->
+<g id="edge2" class="edge">
+<title>whatsapp&#45;&gt;interpretar</title>
+<path fill="none" stroke="#78909f" d="M881.34,-952.9C881.34,-944.56 881.34,-934.27 881.34,-924.56"/>
+<polygon fill="#78909f" stroke="#78909f" points="883.62,-924.6 881.34,-918.1 879.07,-924.6 883.62,-924.6"/>
+</g>
+<!-- interpretar&#45;&gt;consultar -->
+<g id="edge3" class="edge">
+<title>interpretar&#45;&gt;consultar</title>
+<path fill="none" stroke="#78909f" d="M881.34,-866C881.34,-856.97 881.34,-846.69 881.34,-837.57"/>
+<polygon fill="#78909f" stroke="#78909f" points="883.62,-837.59 881.34,-831.09 879.07,-837.59 883.62,-837.59"/>
+</g>
+<!-- consultar&#45;&gt;a_tipo -->
+<g id="edge8" class="edge">
+<title>consultar&#45;&gt;a_tipo</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M745.39,-792.89C649.23,-780.59 537.34,-766.28 537.34,-766.28 537.34,-766.28 499.96,-743.98 466.08,-723.77"/>
+</g>
+<!-- consultar&#45;&gt;b_entrada -->
+<g id="edge9" class="edge">
+<title>consultar&#45;&gt;b_entrada</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M846.56,-792.89C821.97,-780.59 793.34,-766.28 793.34,-766.28 793.34,-766.28 751.47,-743.98 713.53,-723.77"/>
+</g>
+<!-- consultar&#45;&gt;c_tipo -->
+<g id="edge10" class="edge">
+<title>consultar&#45;&gt;c_tipo</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M881.34,-792.79C881.34,-772.43 881.34,-738.7 881.34,-715.86"/>
+</g>
+<!-- consultar&#45;&gt;d_tipo -->
+<g id="edge11" class="edge">
+<title>consultar&#45;&gt;d_tipo</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M916.12,-792.89C940.72,-780.59 969.34,-766.28 969.34,-766.28 969.34,-766.28 1014.29,-737.88 1048.71,-716.13"/>
+</g>
+<!-- consultar&#45;&gt;e_sintoma -->
+<g id="edge12" class="edge">
+<title>consultar&#45;&gt;e_sintoma</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M1000.34,-792.83C1084.1,-780.54 1181.34,-766.28 1181.34,-766.28 1181.34,-766.28 1217.83,-743.98 1250.9,-723.77"/>
+</g>
+<!-- a_tipo&#45;&gt;b_entrada -->
+<!-- a_tipo&#45;&gt;orientar -->
+<g id="edge13" class="edge">
+<title>a_tipo&#45;&gt;orientar</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M486.83,-657.5C548.87,-630.67 635.01,-593.41 685.89,-571.4"/>
+</g>
+<!-- a_tipo&#45;&gt;a_rede -->
+<g id="edge23" class="edge">
+<title>a_tipo&#45;&gt;a_rede</title>
+<path fill="none" stroke="#78909f" d="M334.56,-657.5C277.93,-634.05 202.08,-602.63 148.39,-580.4"/>
+<polygon fill="#78909f" stroke="#78909f" points="149.57,-578.42 142.69,-578.04 147.83,-582.63 149.57,-578.42"/>
+<text xml:space="preserve" text-anchor="middle" x="305.19" y="-622.96" font-family="Arial" font-size="10.00" fill="#415e75">Conta bloqueada</text>
+</g>
+<!-- a_tipo&#45;&gt;a_mfa -->
+<g id="edge27" class="edge">
+<title>a_tipo&#45;&gt;a_mfa</title>
+<path fill="none" stroke="#78909f" d="M404.84,-657.67C401.3,-642.55 396.98,-624.09 392.96,-606.91"/>
+<polygon fill="#78909f" stroke="#78909f" points="395.17,-606.4 391.48,-600.59 390.74,-607.44 395.17,-606.4"/>
+<text xml:space="preserve" text-anchor="middle" x="408.81" y="-622.96" font-family="Arial" font-size="10.00" fill="#415e75">MFA</text>
+</g>
+<!-- b_entrada&#45;&gt;c_tipo -->
+<!-- b_entrada&#45;&gt;orientar -->
+<g id="edge14" class="edge">
+<title>b_entrada&#45;&gt;orientar</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M670.93,-657.67C685.65,-630.85 706.14,-593.51 718.24,-571.45"/>
+</g>
+<!-- c_tipo&#45;&gt;d_tipo -->
+<!-- c_tipo&#45;&gt;orientar -->
+<g id="edge15" class="edge">
+<title>c_tipo&#45;&gt;orientar</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M829.54,-665.39C795.92,-649.61 758.34,-631.96 758.34,-631.96 758.34,-631.96 744.16,-594.66 735.3,-571.34"/>
+</g>
+<!-- c_tipo&#45;&gt;c_evento -->
+<g id="edge39" class="edge">
+<title>c_tipo&#45;&gt;c_evento</title>
+<path fill="none" stroke="#78909f" d="M898.51,-665.28C916.13,-640.19 943.37,-601.4 960.78,-576.62"/>
+<polygon fill="#78909f" stroke="#78909f" points="962.45,-578.2 964.32,-571.58 958.73,-575.59 962.45,-578.2"/>
+<text xml:space="preserve" text-anchor="middle" x="947.41" y="-622.96" font-family="Arial" font-size="10.00" fill="#415e75">Eventos</text>
+</g>
+<!-- d_tipo&#45;&gt;e_sintoma -->
+<!-- d_tipo&#45;&gt;orientar -->
+<g id="edge16" class="edge">
+<title>d_tipo&#45;&gt;orientar</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M1029.38,-665.28C999.54,-652.69 969.34,-639.96 969.34,-639.96 969.34,-639.96 861.34,-631.96 861.34,-631.96 861.34,-631.96 798.48,-594.66 759.19,-571.34"/>
+</g>
+<!-- d_tipo&#45;&gt;d_software -->
+<g id="edge37" class="edge">
+<title>d_tipo&#45;&gt;d_software</title>
+<path fill="none" stroke="#78909f" d="M1111.48,-665.28C1131,-645.52 1158.91,-617.27 1181.84,-594.05"/>
+<polygon fill="#78909f" stroke="#78909f" points="1183.24,-595.87 1186.19,-589.65 1180,-592.67 1183.24,-595.87"/>
+<text xml:space="preserve" text-anchor="middle" x="1173.46" y="-622.96" font-family="Arial" font-size="10.00" fill="#415e75">Reserva</text>
+</g>
+<!-- e_sintoma&#45;&gt;orientar -->
+<g id="edge17" class="edge">
+<title>e_sintoma&#45;&gt;orientar</title>
+<path fill="none" stroke="#78909f" stroke-dasharray="5,2" d="M1224.36,-657.5C1200.9,-647.94 1181.34,-639.96 1181.34,-639.96 1181.34,-639.96 917.34,-631.96 917.34,-631.96 917.34,-631.96 828.01,-594.66 772.18,-571.34"/>
+</g>
+<!-- e_sintoma&#45;&gt;e_projetor -->
+<g id="edge41" class="edge">
+<title>e_sintoma&#45;&gt;e_projetor</title>
+<path fill="none" stroke="#78909f" d="M1334.29,-657.67C1358.49,-632.61 1391.56,-598.38 1413.17,-576"/>
+<polygon fill="#78909f" stroke="#78909f" points="1414.75,-577.64 1417.63,-571.38 1411.48,-574.48 1414.75,-577.64"/>
+</g>
+<!-- orientar&#45;&gt;resolveu -->
+<g id="edge18" class="edge">
+<title>orientar&#45;&gt;resolveu</title>
+<path fill="none" stroke="#78909f" d="M713.03,-532.87C661.91,-472.23 500.34,-280.56 500.34,-280.56 500.34,-280.56 457.18,-201.47 431.31,-154.07"/>
+<polygon fill="#78909f" stroke="#78909f" points="433.31,-152.98 428.2,-148.37 429.31,-155.16 433.31,-152.98"/>
+</g>
+<!-- orientar&#45;&gt;c_evento -->
+<!-- resolveu&#45;&gt;fim -->
+<g id="edge19" class="edge">
+<title>resolveu&#45;&gt;fim</title>
+<path fill="none" stroke="#78909f" d="M386.95,-93.77C369.78,-77.85 347.25,-56.95 330.38,-41.29"/>
+<polygon fill="#78909f" stroke="#78909f" points="332.31,-39.98 326,-37.23 329.21,-43.32 332.31,-39.98"/>
+<text xml:space="preserve" text-anchor="middle" x="364.78" y="-57" font-family="Arial" font-size="10.00" fill="#415e75">Sim</text>
+</g>
+<!-- resolveu&#45;&gt;fila_crc -->
+<g id="edge20" class="edge">
+<title>resolveu&#45;&gt;fila_crc</title>
+<path fill="none" stroke="#78909f" d="M435.57,-92.76C450.2,-77.3 468.97,-57.46 483.35,-42.25"/>
+<polygon fill="#78909f" stroke="#78909f" points="484.98,-43.84 487.79,-37.56 481.67,-40.71 484.98,-43.84"/>
+<text xml:space="preserve" text-anchor="middle" x="479.08" y="-57" font-family="Arial" font-size="10.00" fill="#415e75">Não</text>
+</g>
+<!-- a_rede&#45;&gt;a_reteste -->
+<g id="edge21" class="edge">
+<title>a_rede&#45;&gt;a_reteste</title>
+<path fill="none" stroke="#78909f" d="M98.14,-526.87C110.52,-507.93 127.83,-481.44 141.2,-460.98"/>
+<polygon fill="#78909f" stroke="#78909f" points="143.09,-462.24 144.75,-455.56 139.29,-459.75 143.09,-462.24"/>
+</g>
+<!-- a_rede&#45;&gt;a_mfa -->
+<!-- a_reteste&#45;&gt;a_bloqueada -->
+<g id="edge22" class="edge">
+<title>a_reteste&#45;&gt;a_bloqueada</title>
+<path fill="none" stroke="#78909f" d="M168.3,-403.88C170.99,-394.49 174.14,-383.49 177.13,-373.04"/>
+<polygon fill="#78909f" stroke="#78909f" points="179.25,-373.88 178.86,-367.01 174.88,-372.63 179.25,-373.88"/>
+</g>
+<!-- a_bloqueada&#45;&gt;fim -->
+<g id="edge24" class="edge">
+<title>a_bloqueada&#45;&gt;fim</title>
+<path fill="none" stroke="#78909f" d="M188.01,-298.39C187.58,-254.39 186.87,-182.64 186.87,-182.64 186.87,-182.64 186.87,-170.64 186.87,-170.64 186.87,-170.64 268.34,-54 268.34,-54 268.34,-54 274.38,-48.44 281.63,-41.76"/>
+<polygon fill="#78909f" stroke="#78909f" points="282.99,-43.6 286.23,-37.53 279.91,-40.26 282.99,-43.6"/>
+<text xml:space="preserve" text-anchor="middle" x="221.61" y="-173.64" font-family="Arial" font-size="10.00" fill="#415e75">Não · resolvido</text>
+</g>
+<!-- a_bloqueada&#45;&gt;fila_crc -->
+<g id="edge25" class="edge">
+<title>a_bloqueada&#45;&gt;fila_crc</title>
+<path fill="none" stroke="#78909f" d="M203.3,-301.98C236.28,-236.05 312.34,-84 312.34,-84 312.34,-84 340.34,-54 340.34,-54 340.34,-54 382.22,-45.12 423.78,-36.3"/>
+<polygon fill="#78909f" stroke="#78909f" points="424.16,-38.55 430.05,-34.97 423.22,-34.09 424.16,-38.55"/>
+<text xml:space="preserve" text-anchor="middle" x="277.31" y="-173.64" font-family="Arial" font-size="10.00" fill="#415e75">Sim</text>
+</g>
+<!-- a_mfa&#45;&gt;orientar -->
+<!-- a_mfa&#45;&gt;fila_crc -->
+<g id="edge28" class="edge">
+<title>a_mfa&#45;&gt;fila_crc</title>
+<path fill="none" stroke="#78909f" d="M418.12,-513.29C445.36,-486.08 477.34,-454.12 477.34,-454.12 477.34,-454.12 502.34,-280.56 502.34,-280.56 502.34,-280.56 512.34,-152.64 512.34,-152.64 512.34,-152.64 512.34,-84 512.34,-84 512.34,-84 510.01,-62.31 508.03,-43.99"/>
+<polygon fill="#78909f" stroke="#78909f" points="510.34,-44.14 507.38,-37.92 505.82,-44.63 510.34,-44.14"/>
+<text xml:space="preserve" text-anchor="middle" x="545.49" y="-271.56" font-family="Arial" font-size="10.00" fill="#415e75">Não / reset manual</text>
+</g>
+<!-- a_mfa&#45;&gt;a_configurar -->
+<g id="edge26" class="edge">
+<title>a_mfa&#45;&gt;a_configurar</title>
+<path fill="none" stroke="#78909f" d="M384.32,-502.92C385.45,-489.31 386.65,-474.83 387.68,-462.4"/>
+<polygon fill="#78909f" stroke="#78909f" points="389.93,-462.73 388.2,-456.06 385.4,-462.35 389.93,-462.73"/>
+<text xml:space="preserve" text-anchor="middle" x="395.43" y="-475.12" font-family="Arial" font-size="10.00" fill="#415e75">Sim</text>
+</g>
+<!-- a_configurar&#45;&gt;resolveu -->
+<g id="edge29" class="edge">
+<title>a_configurar&#45;&gt;resolveu</title>
+<path fill="none" stroke="#78909f" d="M392.07,-403.93C395.84,-351.04 404.83,-224.84 409.47,-159.72"/>
+<polygon fill="#78909f" stroke="#78909f" points="411.71,-160.24 409.9,-153.6 407.17,-159.92 411.71,-160.24"/>
+</g>
+<!-- d_software&#45;&gt;d_3 -->
+<g id="edge30" class="edge">
+<title>d_software&#45;&gt;d_3</title>
+<path fill="none" stroke="#78909f" d="M1174.9,-520.54C1141.53,-499.08 1097.68,-470.89 1067.9,-451.73"/>
+<polygon fill="#78909f" stroke="#78909f" points="1069.36,-449.97 1062.66,-448.37 1066.9,-453.8 1069.36,-449.97"/>
+<text xml:space="preserve" text-anchor="middle" x="1126.26" y="-475.12" font-family="Arial" font-size="10.00" fill="#415e75">Não</text>
+</g>
+<!-- d_software&#45;&gt;d_10 -->
+<g id="edge31" class="edge">
+<title>d_software&#45;&gt;d_10</title>
+<path fill="none" stroke="#78909f" d="M1222.34,-501.87C1222.34,-485.96 1222.34,-468.96 1222.34,-455.51"/>
+<polygon fill="#78909f" stroke="#78909f" points="1224.62,-455.65 1222.34,-449.15 1220.07,-455.65 1224.62,-455.65"/>
+<text xml:space="preserve" text-anchor="middle" x="1230.95" y="-475.12" font-family="Arial" font-size="10.00" fill="#415e75">Sim</text>
+</g>
+<!-- d_software&#45;&gt;e_projetor -->
+<!-- d_3&#45;&gt;d_prazo -->
+<g id="edge32" class="edge">
+<title>d_3&#45;&gt;d_prazo</title>
+<path fill="none" stroke="#78909f" d="M1034.34,-410.87C1034.34,-400.83 1034.34,-387.73 1034.34,-375.18"/>
+<polygon fill="#78909f" stroke="#78909f" points="1036.62,-375.49 1034.34,-368.99 1032.07,-375.49 1036.62,-375.49"/>
+</g>
+<!-- d_10&#45;&gt;d_prazo -->
+<g id="edge33" class="edge">
+<title>d_10&#45;&gt;d_prazo</title>
+<path fill="none" stroke="#78909f" d="M1187.86,-410.87C1158.77,-396.28 1116.75,-375.2 1084.02,-358.79"/>
+<polygon fill="#78909f" stroke="#78909f" points="1085.37,-356.92 1078.54,-356.04 1083.33,-360.99 1085.37,-356.92"/>
+</g>
+<!-- d_prazo&#45;&gt;d_data -->
+<g id="edge35" class="edge">
+<title>d_prazo&#45;&gt;d_data</title>
+<path fill="none" stroke="#78909f" d="M1034.34,-298.28C1034.34,-285.64 1034.34,-271.31 1034.34,-258.81"/>
+<polygon fill="#78909f" stroke="#78909f" points="1036.62,-258.9 1034.34,-252.4 1032.07,-258.9 1036.62,-258.9"/>
+<text xml:space="preserve" text-anchor="middle" x="1043.51" y="-271.56" font-family="Arial" font-size="10.00" fill="#415e75">Não</text>
+</g>
+<!-- d_prazo&#45;&gt;d_formulario -->
+<g id="edge34" class="edge">
+<title>d_prazo&#45;&gt;d_formulario</title>
+<path fill="none" stroke="#78909f" d="M975.62,-314.85C918.14,-298.18 829.73,-272.54 762.99,-253.18"/>
+<polygon fill="#78909f" stroke="#78909f" points="763.71,-251.02 756.83,-251.39 762.44,-255.39 763.71,-251.02"/>
+<text xml:space="preserve" text-anchor="middle" x="861.45" y="-271.56" font-family="Arial" font-size="10.00" fill="#415e75">Sim</text>
+</g>
+<!-- d_data&#45;&gt;d_prazo -->
+<g id="edge36" class="edge">
+<title>d_data&#45;&gt;d_prazo</title>
+<path fill="none" stroke="#78909f" d="M1048.3,-251.01C1053.58,-260.24 1058.34,-268.56 1058.34,-268.56 1058.34,-268.56 1058.34,-280.56 1058.34,-280.56 1058.34,-280.56 1055.44,-286.77 1051.65,-294.87"/>
+<polygon fill="#78909f" stroke="#78909f" points="1049.64,-293.8 1048.95,-300.66 1053.76,-295.73 1049.64,-293.8"/>
+<text xml:space="preserve" text-anchor="middle" x="1105.87" y="-271.56" font-family="Arial" font-size="10.00" fill="#415e75">Nova data · revalidar</text>
+</g>
+<!-- d_formulario&#45;&gt;resolveu -->
+<g id="edge38" class="edge">
+<title>d_formulario&#45;&gt;resolveu</title>
+<path fill="none" stroke="#78909f" d="M611.27,-200.18C565.79,-181.69 504.07,-156.61 461.5,-139.3"/>
+<polygon fill="#78909f" stroke="#78909f" points="462.6,-137.29 455.72,-136.95 460.88,-141.51 462.6,-137.29"/>
+</g>
+<!-- c_evento&#45;&gt;fila_crc -->
+<g id="edge40" class="edge">
+<title>c_evento&#45;&gt;fila_crc</title>
+<path fill="none" stroke="#78909f" d="M960.29,-533.72C927.39,-500.3 858.34,-430.16 858.34,-430.16 858.34,-430.16 858.34,-430.16 858.34,-117.32 858.34,-117.32 678.59,-67.25 575.63,-38.58"/>
+<polygon fill="#78909f" stroke="#78909f" points="576.38,-36.42 569.5,-36.87 575.15,-40.81 576.38,-36.42"/>
+</g>
+<!-- c_evento&#45;&gt;d_software -->
+<!-- e_projetor&#45;&gt;infraestrutura -->
+<g id="edge42" class="edge">
+<title>e_projetor&#45;&gt;infraestrutura</title>
+<path fill="none" stroke="#78909f" d="M1435.34,-533.72C1435.34,-500.3 1435.34,-430.16 1435.34,-430.16 1435.34,-430.16 1435.34,-430.16 1435.34,-117.32 1435.34,-117.32 1435.34,-73.02 1435.34,-43.89"/>
+<polygon fill="#78909f" stroke="#78909f" points="1437.62,-44.14 1435.34,-37.64 1433.07,-44.14 1437.62,-44.14"/>
+</g>
+<!-- crc -->
+<g id="node1" class="node">
+<title>crc</title>
+<path fill="#133e55" stroke="#afc3d2" d="M1010.38,-1066.52C1010.38,-1066.52 752.31,-1066.52 752.31,-1066.52 746.31,-1066.52 740.31,-1060.52 740.31,-1054.52 740.31,-1054.52 740.31,-1038.2 740.31,-1038.2 740.31,-1032.2 746.31,-1026.2 752.31,-1026.2 752.31,-1026.2 1010.38,-1026.2 1010.38,-1026.2 1016.38,-1026.2 1022.38,-1032.2 1022.38,-1038.2 1022.38,-1038.2 1022.38,-1054.52 1022.38,-1054.52 1022.38,-1060.52 1016.38,-1066.52 1010.38,-1066.52"/>
+<text xml:space="preserve" text-anchor="middle" x="881.34" y="-1040.96" font-family="Arial" font-size="18.00" fill="white">Atendimento CRC — 3131&#45;2471</text>
+</g>
+<!-- whatsapp -->
+<g id="node2" class="node">
+<title>whatsapp</title>
+<path fill="#f4f8fc" stroke="#afc3d2" d="M912.29,-989.2C912.29,-989.2 850.4,-989.2 850.4,-989.2 844.4,-989.2 838.4,-983.2 838.4,-977.2 838.4,-977.2 838.4,-965.2 838.4,-965.2 838.4,-959.2 844.4,-953.2 850.4,-953.2 850.4,-953.2 912.29,-953.2 912.29,-953.2 918.29,-953.2 924.29,-959.2 924.29,-965.2 924.29,-965.2 924.29,-977.2 924.29,-977.2 924.29,-983.2 918.29,-989.2 912.29,-989.2"/>
+<text xml:space="preserve" text-anchor="middle" x="881.34" y="-967.3" font-family="Arial" font-size="13.00" fill="#17354c">WhatsApp</text>
+</g>
+<!-- interpretar -->
+<g id="node3" class="node">
+<title>interpretar</title>
+<path fill="#f4f8fc" stroke="#afc3d2" d="M975.16,-916.2C975.16,-916.2 787.53,-916.2 787.53,-916.2 781.53,-916.2 775.53,-910.2 775.53,-904.2 775.53,-904.2 775.53,-878.28 775.53,-878.28 775.53,-872.28 781.53,-866.28 787.53,-866.28 787.53,-866.28 975.16,-866.28 975.16,-866.28 981.16,-866.28 987.16,-872.28 987.16,-878.28 987.16,-878.28 987.16,-904.2 987.16,-904.2 987.16,-910.2 981.16,-916.2 975.16,-916.2"/>
+<text xml:space="preserve" text-anchor="middle" x="881.34" y="-895.14" font-family="Arial" font-size="13.00" fill="#17354c">OmniChat interpreta a demanda</text>
+<text xml:space="preserve" text-anchor="middle" x="881.34" y="-879.54" font-family="Arial" font-size="13.00" fill="#17354c">Identifica a necessidade</text>
+</g>
+<!-- consultar -->
+<g id="node4" class="node">
+<title>consultar</title>
+<path fill="#e3f2eb" stroke="#afc3d2" d="M1005.16,-829.28C1005.16,-829.28 757.53,-829.28 757.53,-829.28 751.53,-829.28 745.53,-823.28 745.53,-817.28 745.53,-817.28 745.53,-805.28 745.53,-805.28 745.53,-799.28 751.53,-793.28 757.53,-793.28 757.53,-793.28 1005.16,-793.28 1005.16,-793.28 1011.16,-793.28 1017.16,-799.28 1017.16,-805.28 1017.16,-805.28 1017.16,-817.28 1017.16,-817.28 1017.16,-823.28 1011.16,-829.28 1005.16,-829.28"/>
+<text xml:space="preserve" text-anchor="middle" x="881.34" y="-807.38" font-family="Arial" font-size="13.00" fill="#17354c">Consulta a documentação correspondente</text>
+</g>
+<!-- a_tipo -->
+<g id="node5" class="node">
+<title>a_tipo</title>
+<path fill="#dcecf8" stroke="#afc3d2" d="M488.79,-723.48C488.79,-723.48 335.89,-723.48 335.89,-723.48 329.89,-723.48 323.89,-717.48 323.89,-711.48 323.89,-711.48 323.89,-669.96 323.89,-669.96 323.89,-663.96 329.89,-657.96 335.89,-657.96 335.89,-657.96 488.79,-657.96 488.79,-657.96 494.79,-657.96 500.79,-663.96 500.79,-669.96 500.79,-669.96 500.79,-711.48 500.79,-711.48 500.79,-717.48 494.79,-723.48 488.79,-723.48"/>
+<text xml:space="preserve" text-anchor="middle" x="412.34" y="-702.42" font-family="Arial" font-size="13.00" fill="#17354c">Acesso e credenciais</text>
+<text xml:space="preserve" text-anchor="middle" x="412.34" y="-686.82" font-family="Arial" font-size="13.00" fill="#17354c">SGA · Senhas · MFA</text>
+<text xml:space="preserve" text-anchor="middle" x="412.34" y="-671.22" font-family="Arial" font-size="13.00" fill="#17354c">PUC Mail · Administrativo</text>
+</g>
+<!-- b_entrada -->
+<g id="node6" class="node">
+<title>b_entrada</title>
+<path fill="#e7eafb" stroke="#afc3d2" d="M744.6,-723.48C744.6,-723.48 562.08,-723.48 562.08,-723.48 556.08,-723.48 550.08,-717.48 550.08,-711.48 550.08,-711.48 550.08,-669.96 550.08,-669.96 550.08,-663.96 556.08,-657.96 562.08,-657.96 562.08,-657.96 744.6,-657.96 744.6,-657.96 750.6,-657.96 756.6,-663.96 756.6,-669.96 756.6,-669.96 756.6,-711.48 756.6,-711.48 756.6,-717.48 750.6,-723.48 744.6,-723.48"/>
+<text xml:space="preserve" text-anchor="middle" x="653.34" y="-702.42" font-family="Arial" font-size="13.00" fill="#17354c">Plataformas e aplicativos</text>
+<text xml:space="preserve" text-anchor="middle" x="653.34" y="-686.82" font-family="Arial" font-size="13.00" fill="#17354c">Canvas · Teams · Office 365</text>
+<text xml:space="preserve" text-anchor="middle" x="653.34" y="-671.22" font-family="Arial" font-size="13.00" fill="#17354c">PUC Mobile · SGA · PUC Mail</text>
+</g>
+<!-- c_tipo -->
+<g id="node7" class="node">
+<title>c_tipo</title>
+<path fill="#dff1eb" stroke="#afc3d2" d="M944.82,-715.68C944.82,-715.68 817.87,-715.68 817.87,-715.68 811.87,-715.68 805.87,-709.68 805.87,-703.68 805.87,-703.68 805.87,-677.76 805.87,-677.76 805.87,-671.76 811.87,-665.76 817.87,-665.76 817.87,-665.76 944.82,-665.76 944.82,-665.76 950.82,-665.76 956.82,-671.76 956.82,-677.76 956.82,-677.76 956.82,-703.68 956.82,-703.68 956.82,-709.68 950.82,-715.68 944.82,-715.68"/>
+<text xml:space="preserve" text-anchor="middle" x="881.34" y="-694.62" font-family="Arial" font-size="13.00" fill="#17354c">Rede e conectividade</text>
+<text xml:space="preserve" text-anchor="middle" x="881.34" y="-679.02" font-family="Arial" font-size="13.00" fill="#17354c">Wi&#45;Fi · VPN</text>
+</g>
+<!-- d_tipo -->
+<g id="node8" class="node">
+<title>d_tipo</title>
+<path fill="#f9edcd" stroke="#afc3d2" d="M1156.58,-715.68C1156.58,-715.68 1018.1,-715.68 1018.1,-715.68 1012.1,-715.68 1006.1,-709.68 1006.1,-703.68 1006.1,-703.68 1006.1,-677.76 1006.1,-677.76 1006.1,-671.76 1012.1,-665.76 1018.1,-665.76 1018.1,-665.76 1156.58,-665.76 1156.58,-665.76 1162.58,-665.76 1168.58,-671.76 1168.58,-677.76 1168.58,-677.76 1168.58,-703.68 1168.58,-703.68 1168.58,-709.68 1162.58,-715.68 1156.58,-715.68"/>
+<text xml:space="preserve" text-anchor="middle" x="1087.34" y="-694.62" font-family="Arial" font-size="13.00" fill="#17354c">Solicitações e serviços</text>
+<text xml:space="preserve" text-anchor="middle" x="1087.34" y="-679.02" font-family="Arial" font-size="13.00" fill="#17354c">Reserva de LAB · CSC</text>
+</g>
+<!-- e_sintoma -->
+<g id="node9" class="node">
+<title>e_sintoma</title>
+<path fill="#f2e4ed" stroke="#afc3d2" d="M1376.57,-723.48C1376.57,-723.48 1230.11,-723.48 1230.11,-723.48 1224.11,-723.48 1218.11,-717.48 1218.11,-711.48 1218.11,-711.48 1218.11,-669.96 1218.11,-669.96 1218.11,-663.96 1224.11,-657.96 1230.11,-657.96 1230.11,-657.96 1376.57,-657.96 1376.57,-657.96 1382.57,-657.96 1388.57,-663.96 1388.57,-669.96 1388.57,-669.96 1388.57,-711.48 1388.57,-711.48 1388.57,-717.48 1382.57,-723.48 1376.57,-723.48"/>
+<text xml:space="preserve" text-anchor="middle" x="1303.34" y="-702.42" font-family="Arial" font-size="13.00" fill="#17354c">Suporte em Sala de Aula</text>
+<text xml:space="preserve" text-anchor="middle" x="1303.34" y="-686.82" font-family="Arial" font-size="13.00" fill="#17354c">Computador · Rede</text>
+<text xml:space="preserve" text-anchor="middle" x="1303.34" y="-671.22" font-family="Arial" font-size="13.00" fill="#17354c">Equipamentos · Projetor</text>
+</g>
+<!-- orientar -->
+<g id="node10" class="node">
+<title>orientar</title>
+<path fill="#e3f2eb" stroke="#75a993" d="M848.49,-571C848.49,-571 608.2,-571 608.2,-571 602.2,-571 596.2,-565 596.2,-559 596.2,-559 596.2,-545.08 596.2,-545.08 596.2,-539.08 602.2,-533.08 608.2,-533.08 608.2,-533.08 848.49,-533.08 848.49,-533.08 854.49,-533.08 860.49,-539.08 860.49,-545.08 860.49,-545.08 860.49,-559 860.49,-559 860.49,-565 854.49,-571 848.49,-571"/>
+<text xml:space="preserve" text-anchor="middle" x="728.34" y="-547.24" font-family="Arial" font-size="16.00" fill="#17354c">Aplica a orientação documentada</text>
+</g>
+<!-- resolveu -->
+<g id="node11" class="node">
+<title>resolveu</title>
+<path fill="#fff4d9" stroke="#c8a45a" d="M401.17,-148.25C401.17,-148.25 336.17,-122.71 336.17,-122.71 330.58,-120.51 330.58,-116.13 336.17,-113.93 336.17,-113.93 401.17,-88.39 401.17,-88.39 406.76,-86.19 417.93,-86.19 423.51,-88.39 423.51,-88.39 488.52,-113.93 488.52,-113.93 494.1,-116.13 494.1,-120.51 488.52,-122.71 488.52,-122.71 423.51,-148.25 423.51,-148.25 417.93,-150.45 406.76,-150.45 401.17,-148.25"/>
+<text xml:space="preserve" text-anchor="middle" x="412.34" y="-114.42" font-family="Arial" font-size="13.00" fill="#17354c">Resolveu?</text>
+</g>
+<!-- fim -->
+<g id="node12" class="node">
+<title>fim</title>
+<path fill="#daf0e3" stroke="#4c9773" d="M369.81,-36C369.81,-36 242.88,-36 242.88,-36 236.88,-36 230.88,-30 230.88,-24 230.88,-24 230.88,-12 230.88,-12 230.88,-6 236.88,0 242.88,0 242.88,0 369.81,0 369.81,0 375.81,0 381.81,-6 381.81,-12 381.81,-12 381.81,-24 381.81,-24 381.81,-30 375.81,-36 369.81,-36"/>
+<text xml:space="preserve" text-anchor="middle" x="306.34" y="-14.1" font-family="Arial" font-size="13.00" fill="#17354c">Encerrar atendimento</text>
+</g>
+<!-- fila_crc -->
+<g id="node13" class="node">
+<title>fila_crc</title>
+<path fill="#ffebe5" stroke="#bd7968" d="M567,-36C567,-36 443.69,-36 443.69,-36 437.69,-36 431.69,-30 431.69,-24 431.69,-24 431.69,-12 431.69,-12 431.69,-6 437.69,0 443.69,0 443.69,0 567,0 567,0 573,0 579,-6 579,-12 579,-12 579,-24 579,-24 579,-30 573,-36 567,-36"/>
+<text xml:space="preserve" text-anchor="middle" x="505.34" y="-14.1" font-family="Arial" font-size="13.00" fill="#17354c">Fila humana do CRC</text>
+</g>
+<!-- a_rede -->
+<g id="node14" class="node">
+<title>a_rede</title>
+<path fill="#f4f8fc" stroke="#afc3d2" d="M152.69,-577C152.69,-577 12,-577 12,-577 6,-577 0,-571 0,-565 0,-565 0,-539.08 0,-539.08 0,-533.08 6,-527.08 12,-527.08 12,-527.08 152.69,-527.08 152.69,-527.08 158.69,-527.08 164.69,-533.08 164.69,-539.08 164.69,-539.08 164.69,-565 164.69,-565 164.69,-571 158.69,-577 152.69,-577"/>
+<text xml:space="preserve" text-anchor="middle" x="82.34" y="-555.94" font-family="Arial" font-size="13.00" fill="#17354c">Conta bloqueada</text>
+<text xml:space="preserve" text-anchor="middle" x="82.34" y="-540.34" font-family="Arial" font-size="13.00" fill="#17354c">Reset da senha da rede</text>
+</g>
+<!-- a_reteste -->
+<g id="node15" class="node">
+<title>a_reteste</title>
+<path fill="#f4f8fc" stroke="#afc3d2" d="M214.69,-454.12C214.69,-454.12 108,-454.12 108,-454.12 102,-454.12 96,-448.12 96,-442.12 96,-442.12 96,-416.2 96,-416.2 96,-410.2 102,-404.2 108,-404.2 108,-404.2 214.69,-404.2 214.69,-404.2 220.69,-404.2 226.69,-410.2 226.69,-416.2 226.69,-416.2 226.69,-442.12 226.69,-442.12 226.69,-448.12 220.69,-454.12 214.69,-454.12"/>
+<text xml:space="preserve" text-anchor="middle" x="161.34" y="-433.06" font-family="Arial" font-size="13.00" fill="#17354c">Reset concluído</text>
+<text xml:space="preserve" text-anchor="middle" x="161.34" y="-417.46" font-family="Arial" font-size="13.00" fill="#17354c">Testar novamente</text>
+</g>
+<!-- a_bloqueada -->
+<g id="node16" class="node">
+<title>a_bloqueada</title>
+<path fill="#fff4d9" stroke="#afc3d2" d="M176.65,-364.52C176.65,-364.52 50.51,-335.56 50.51,-335.56 44.66,-334.22 44.66,-331.54 50.51,-330.2 50.51,-330.2 176.65,-301.24 176.65,-301.24 182.5,-299.9 194.19,-299.9 200.04,-301.24 200.04,-301.24 326.18,-330.2 326.18,-330.2 332.02,-331.54 332.02,-334.22 326.18,-335.56 326.18,-335.56 200.04,-364.52 200.04,-364.52 194.19,-365.86 182.5,-365.86 176.65,-364.52"/>
+<text xml:space="preserve" text-anchor="middle" x="188.34" y="-328.98" font-family="Arial" font-size="13.00" fill="#17354c">Continua bloqueada?</text>
+</g>
+<!-- a_mfa -->
+<g id="node17" class="node">
+<title>a_mfa</title>
+<g id="a_node17"><a xlink:title="Verificar procedimento documentado e backup disponível antes de encaminhar.">
+<path fill="#fff4d9" stroke="#afc3d2" d="M368.85,-598.51C368.85,-598.51 225.73,-555.49 225.73,-555.49 219.98,-553.77 219.98,-550.31 225.73,-548.59 225.73,-548.59 368.85,-505.57 368.85,-505.57 374.6,-503.85 386.09,-503.85 391.84,-505.57 391.84,-505.57 534.96,-548.59 534.96,-548.59 540.7,-550.31 540.7,-553.77 534.96,-555.49 534.96,-555.49 391.84,-598.51 391.84,-598.51 386.09,-600.23 374.6,-600.23 368.85,-598.51"/>
+<text xml:space="preserve" text-anchor="middle" x="380.34" y="-555.94" font-family="Arial" font-size="13.00" fill="#17354c">Problema de MFA</text>
+<text xml:space="preserve" text-anchor="middle" x="380.34" y="-540.34" font-family="Arial" font-size="13.00" fill="#17354c">Recuperação possível?</text>
+</a>
+</g>
+</g>
+<!-- a_configurar -->
+<g id="node18" class="node">
+<title>a_configurar</title>
+<path fill="#f4f8fc" stroke="#afc3d2" d="M453.08,-454.12C453.08,-454.12 327.6,-454.12 327.6,-454.12 321.6,-454.12 315.6,-448.12 315.6,-442.12 315.6,-442.12 315.6,-416.2 315.6,-416.2 315.6,-410.2 321.6,-404.2 327.6,-404.2 327.6,-404.2 453.08,-404.2 453.08,-404.2 459.08,-404.2 465.08,-410.2 465.08,-416.2 465.08,-416.2 465.08,-442.12 465.08,-442.12 465.08,-448.12 459.08,-454.12 453.08,-454.12"/>
+<text xml:space="preserve" text-anchor="middle" x="390.34" y="-433.06" font-family="Arial" font-size="13.00" fill="#17354c">Orientar recuperação</text>
+<text xml:space="preserve" text-anchor="middle" x="390.34" y="-417.46" font-family="Arial" font-size="13.00" fill="#17354c">ou configuração</text>
+</g>
+<!-- d_software -->
+<g id="node19" class="node">
+<title>d_software</title>
+<g id="a_node19"><a xlink:title="Corpo Docente ou Corpo Técnico Administrativo. Campus Lourdes.">
+<path fill="#fff4d9" stroke="#afc3d2" d="M1211.17,-597.59C1211.17,-597.59 1105.73,-556.41 1105.73,-556.41 1100.14,-554.22 1100.14,-549.86 1105.73,-547.67 1105.73,-547.67 1211.17,-506.49 1211.17,-506.49 1216.75,-504.3 1227.93,-504.3 1233.52,-506.49 1233.52,-506.49 1338.96,-547.67 1338.96,-547.67 1344.55,-549.86 1344.55,-554.22 1338.96,-556.41 1338.96,-556.41 1233.52,-597.59 1233.52,-597.59 1227.93,-599.78 1216.75,-599.78 1211.17,-597.59"/>
+<text xml:space="preserve" text-anchor="middle" x="1222.34" y="-555.94" font-family="Arial" font-size="13.00" fill="#17354c">Reserva de LAB</text>
+<text xml:space="preserve" text-anchor="middle" x="1222.34" y="-540.34" font-family="Arial" font-size="13.00" fill="#17354c">Haverá software?</text>
+</a>
+</g>
+</g>
+<!-- d_3 -->
+<g id="node20" class="node">
+<title>d_3</title>
+<path fill="#f4f8fc" stroke="#afc3d2" d="M1102.14,-447.16C1102.14,-447.16 966.55,-447.16 966.55,-447.16 960.55,-447.16 954.55,-441.16 954.55,-435.16 954.55,-435.16 954.55,-423.16 954.55,-423.16 954.55,-417.16 960.55,-411.16 966.55,-411.16 966.55,-411.16 1102.14,-411.16 1102.14,-411.16 1108.14,-411.16 1114.14,-417.16 1114.14,-423.16 1114.14,-423.16 1114.14,-435.16 1114.14,-435.16 1114.14,-441.16 1108.14,-447.16 1102.14,-447.16"/>
+<text xml:space="preserve" text-anchor="middle" x="1034.34" y="-425.26" font-family="Arial" font-size="13.00" fill="#17354c">Mínimo de 3 dias úteis</text>
+</g>
+<!-- d_10 -->
+<g id="node21" class="node">
+<title>d_10</title>
+<path fill="#f4f8fc" stroke="#afc3d2" d="M1293.75,-447.16C1293.75,-447.16 1150.93,-447.16 1150.93,-447.16 1144.93,-447.16 1138.93,-441.16 1138.93,-435.16 1138.93,-435.16 1138.93,-423.16 1138.93,-423.16 1138.93,-417.16 1144.93,-411.16 1150.93,-411.16 1150.93,-411.16 1293.75,-411.16 1293.75,-411.16 1299.75,-411.16 1305.75,-417.16 1305.75,-423.16 1305.75,-423.16 1305.75,-435.16 1305.75,-435.16 1305.75,-441.16 1299.75,-447.16 1293.75,-447.16"/>
+<text xml:space="preserve" text-anchor="middle" x="1222.34" y="-425.26" font-family="Arial" font-size="13.00" fill="#17354c">Mínimo de 10 dias úteis</text>
+</g>
+<!-- d_prazo -->
+<g id="node22" class="node">
+<title>d_prazo</title>
+<g id="a_node22"><a xlink:title="Validar automaticamente a data conforme antecedência exigida.">
+<path fill="#fff4d9" stroke="#afc3d2" d="M1022.8,-363.92C1022.8,-363.92 925.28,-336.16 925.28,-336.16 919.51,-334.52 919.51,-331.24 925.28,-329.6 925.28,-329.6 1022.8,-301.84 1022.8,-301.84 1028.57,-300.2 1040.11,-300.2 1045.88,-301.84 1045.88,-301.84 1143.4,-329.6 1143.4,-329.6 1149.17,-331.24 1149.17,-334.52 1143.4,-336.16 1143.4,-336.16 1045.88,-363.92 1045.88,-363.92 1040.11,-365.56 1028.57,-365.56 1022.8,-363.92"/>
+<text xml:space="preserve" text-anchor="middle" x="1034.34" y="-328.98" font-family="Arial" font-size="13.00" fill="#17354c">Prazo atendido?</text>
+</a>
+</g>
+</g>
+<!-- d_data -->
+<g id="node23" class="node">
+<title>d_data</title>
+<path fill="#f4f8fc" stroke="#afc3d2" d="M1102.49,-250.56C1102.49,-250.56 966.2,-250.56 966.2,-250.56 960.2,-250.56 954.2,-244.56 954.2,-238.56 954.2,-238.56 954.2,-212.64 954.2,-212.64 954.2,-206.64 960.2,-200.64 966.2,-200.64 966.2,-200.64 1102.49,-200.64 1102.49,-200.64 1108.49,-200.64 1114.49,-206.64 1114.49,-212.64 1114.49,-212.64 1114.49,-238.56 1114.49,-238.56 1114.49,-244.56 1108.49,-250.56 1102.49,-250.56"/>
+<text xml:space="preserve" text-anchor="middle" x="1034.34" y="-229.5" font-family="Arial" font-size="13.00" fill="#17354c">Informar prazo mínimo</text>
+<text xml:space="preserve" text-anchor="middle" x="1034.34" y="-213.9" font-family="Arial" font-size="13.00" fill="#17354c">e solicitar nova data</text>
+</g>
+<!-- d_formulario -->
+<g id="node24" class="node">
+<title>d_formulario</title>
+<path fill="#f4f8fc" stroke="#afc3d2" d="M756.93,-250.56C756.93,-250.56 585.76,-250.56 585.76,-250.56 579.76,-250.56 573.76,-244.56 573.76,-238.56 573.76,-238.56 573.76,-212.64 573.76,-212.64 573.76,-206.64 579.76,-200.64 585.76,-200.64 585.76,-200.64 756.93,-200.64 756.93,-200.64 762.93,-200.64 768.93,-206.64 768.93,-212.64 768.93,-212.64 768.93,-238.56 768.93,-238.56 768.93,-244.56 762.93,-250.56 756.93,-250.56"/>
+<text xml:space="preserve" text-anchor="middle" x="671.34" y="-229.5" font-family="Arial" font-size="13.00" fill="#17354c">Orientar formulário</text>
+<text xml:space="preserve" text-anchor="middle" x="671.34" y="-213.9" font-family="Arial" font-size="13.00" fill="#17354c">Administrativo @pucminas.br</text>
+</g>
+<!-- c_evento -->
+<g id="node25" class="node">
+<title>c_evento</title>
+<path fill="#ffebe5" stroke="#afc3d2" d="M1032.85,-570.04C1032.85,-570.04 921.84,-570.04 921.84,-570.04 915.84,-570.04 909.84,-564.04 909.84,-558.04 909.84,-558.04 909.84,-546.04 909.84,-546.04 909.84,-540.04 915.84,-534.04 921.84,-534.04 921.84,-534.04 1032.85,-534.04 1032.85,-534.04 1038.85,-534.04 1044.85,-540.04 1044.85,-546.04 1044.85,-546.04 1044.85,-558.04 1044.85,-558.04 1044.85,-564.04 1038.85,-570.04 1032.85,-570.04"/>
+<text xml:space="preserve" text-anchor="middle" x="977.34" y="-548.14" font-family="Arial" font-size="13.00" fill="#17354c">Wi&#45;Fi para eventos</text>
+</g>
+<!-- e_projetor -->
+<g id="node26" class="node">
+<title>e_projetor</title>
+<g id="a_node26"><a xlink:title="Orientar quando documentado e encaminhar à Infraestrutura.">
+<path fill="#f2e4ed" stroke="#afc3d2" d="M1459.06,-570.04C1459.06,-570.04 1411.62,-570.04 1411.62,-570.04 1405.62,-570.04 1399.62,-564.04 1399.62,-558.04 1399.62,-558.04 1399.62,-546.04 1399.62,-546.04 1399.62,-540.04 1405.62,-534.04 1411.62,-534.04 1411.62,-534.04 1459.06,-534.04 1459.06,-534.04 1465.06,-534.04 1471.06,-540.04 1471.06,-546.04 1471.06,-546.04 1471.06,-558.04 1471.06,-558.04 1471.06,-564.04 1465.06,-570.04 1459.06,-570.04"/>
+<text xml:space="preserve" text-anchor="middle" x="1435.34" y="-548.14" font-family="Arial" font-size="13.00" fill="#17354c">Projetor</text>
+</a>
+</g>
+</g>
+<!-- infraestrutura -->
+<g id="node27" class="node">
+<title>infraestrutura</title>
+<path fill="#f2e3ee" stroke="#a77598" d="M1515.07,-36C1515.07,-36 1355.61,-36 1355.61,-36 1349.61,-36 1343.61,-30 1343.61,-24 1343.61,-24 1343.61,-12 1343.61,-12 1343.61,-6 1349.61,0 1355.61,0 1355.61,0 1515.07,0 1515.07,0 1521.07,0 1527.07,-6 1527.07,-12 1527.07,-12 1527.07,-24 1527.07,-24 1527.07,-30 1521.07,-36 1515.07,-36"/>
+<text xml:space="preserve" text-anchor="middle" x="1435.34" y="-14.1" font-family="Arial" font-size="13.00" fill="#17354c">Infraestrutura — 3131&#45;2804</text>
+</g>
+</g>
+</svg>
+
+ </div>
+ <aside id="inspector" class="inspector" hidden aria-label="Informações do tópico">
+  <button id="close-inspector" class="close" aria-label="Fechar informações">×</button><div class="eyebrow">CONTEXTO DO BLOCO</div><h2 id="topic-title"></h2><p id="topic-detail"></p><p class="sources-label">Referências</p><ul id="topic-sources"></ul>
+ </aside>
+ <div class="canvas-hint">Arraste para explorar <span>·</span> Role para ampliar <span>·</span> Clique em um bloco para consultar sua referência</div>
+ <noscript><div class="no-script">O fluxograma completo está abaixo. Ative JavaScript para zoom, arraste e busca.</div></noscript>
+</main>
+<footer><span>WhatsApp → orientação documental → solução ou CRC <span class="footer-exception">· Projetor: Infraestrutura — 3131-2804</span></span><span><a href="docs/pendencias.md">Pendências</a><a href="docs/referencias.md">Referências</a><a href="src/fluxo.dot" download>Fonte .dot</a></span></footer>
+<div id="announce" class="sr-only" aria-live="polite"></div>
+<script>const RESOURCES = {"fluxo.dot": "// FONTE CANÔNICA. O SVG mostra o atendimento, não os tutoriais.\n// Cinco blocos de conhecimento; apenas cinco exceções têm caminhos próprios.\n// Tópicos sem nó conservam seu ID no catalog.json via nodeId (busca e links).\ndigraph AtendimentoCRC {\n graph [rankdir=TB, bgcolor=\"white\", pad=.3, nodesep=.35, ranksep=.48, splines=polyline, newrank=true, fontname=\"Arial\", fontsize=14, outputorder=edgesfirst];\n node [shape=box, style=\"rounded,filled\", color=\"#afc3d2\", fillcolor=\"#f4f8fc\", fontcolor=\"#17354c\", fontname=\"Arial\", fontsize=13, margin=\".18,.13\"];\n edge [fontname=\"Arial\", fontsize=10, color=\"#78909f\", fontcolor=\"#415e75\", arrowsize=.65];\n crc [label=\"Atendimento CRC — 3131-2471\", fillcolor=\"#133e55\", fontcolor=\"white\", fontsize=18];\n whatsapp [label=\"WhatsApp\"];\n interpretar [label=\"OmniChat interpreta a demanda\\nIdentifica a necessidade\"];\n consultar [ordering=out, label=\"Consulta a documentação correspondente\", fillcolor=\"#e3f2eb\"];\n crc -> whatsapp -> interpretar -> consultar;\n\n // Mapa da base: assuntos não são menus nem triagem obrigatória por perfil.\n subgraph cluster_base {\n label=\"BASE DE CONHECIMENTO · detalhes e referências na busca / painel\";\n style=\"rounded\"; color=\"#ccd8df\"; margin=18;\n a_tipo [label=\"Acesso e credenciais\\nSGA · Senhas · MFA\\nPUC Mail · Administrativo\", fillcolor=\"#dcecf8\"];\n b_entrada [label=\"Plataformas e aplicativos\\nCanvas · Teams · Office 365\\nPUC Mobile · SGA · PUC Mail\", fillcolor=\"#e7eafb\"];\n c_tipo [label=\"Rede e conectividade\\nWi-Fi · VPN\", fillcolor=\"#dff1eb\"];\n d_tipo [label=\"Solicitações e serviços\\nReserva de LAB · CSC\", fillcolor=\"#f9edcd\"];\n e_sintoma [label=\"Suporte em Sala de Aula\\nComputador · Rede\\nEquipamentos · Projetor\", fillcolor=\"#f2e4ed\"];\n {rank=same; a_tipo; b_entrada; c_tipo; d_tipo; e_sintoma;}\n a_tipo -> b_entrada -> c_tipo -> d_tipo -> e_sintoma [style=invis, weight=100];\n }\n consultar -> {a_tipo b_entrada c_tipo d_tipo e_sintoma} [style=dashed, arrowhead=none];\n // Linhas pontilhadas representam cobertura documental, não cinco fluxos.\n {a_tipo b_entrada c_tipo d_tipo e_sintoma} -> orientar [style=dashed, arrowhead=none];\n orientar [label=\"Aplica a orientação documentada\", fillcolor=\"#e3f2eb\", color=\"#75a993\", fontsize=16];\n resolveu [label=\"Resolveu?\", shape=diamond, fillcolor=\"#fff4d9\", color=\"#c8a45a\"];\n fim [label=\"Encerrar atendimento\", fillcolor=\"#daf0e3\", color=\"#4c9773\"];\n fila_crc [label=\"Fila humana do CRC\", fillcolor=\"#ffebe5\", color=\"#bd7968\"];\n orientar -> resolveu;\n resolveu -> fim [label=\"Sim\"];\n resolveu -> fila_crc [label=\"Não\"];\n\n // Exceções: apenas decisões que mudam regra operacional ou destino.\n a_rede [label=\"Conta bloqueada\\nReset da senha da rede\"];\n a_reteste [label=\"Reset concluído\\nTestar novamente\"];\n a_bloqueada [label=\"Continua bloqueada?\", shape=diamond, fillcolor=\"#fff4d9\"];\n a_rede -> a_reteste -> a_bloqueada;\n a_tipo -> a_rede [label=\"Conta bloqueada\"];\n a_bloqueada -> fim [label=\"Não · resolvido\"];\n a_bloqueada -> fila_crc [label=\"Sim\"];\n a_mfa [label=\"Problema de MFA\\nRecuperação possível?\", shape=diamond, fillcolor=\"#fff4d9\", tooltip=\"Verificar procedimento documentado e backup disponível antes de encaminhar.\"];\n a_configurar [label=\"Orientar recuperação\\nou configuração\"];\n a_mfa -> a_configurar [label=\"Sim\"];\n a_tipo -> a_mfa [label=\"MFA\"];\n a_mfa -> fila_crc [label=\"Não / reset manual\"];\n a_configurar -> resolveu;\n d_software [label=\"Reserva de LAB\\nHaverá software?\", shape=diamond, fillcolor=\"#fff4d9\", tooltip=\"Corpo Docente ou Corpo Técnico Administrativo. Campus Lourdes.\"];\n d_3 [label=\"Mínimo de 3 dias úteis\"];\n d_10 [label=\"Mínimo de 10 dias úteis\"];\n d_prazo [label=\"Prazo atendido?\", shape=diamond, fillcolor=\"#fff4d9\", tooltip=\"Validar automaticamente a data conforme antecedência exigida.\"];\n d_data [label=\"Informar prazo mínimo\\ne solicitar nova data\"];\n d_formulario [label=\"Orientar formulário\\nAdministrativo @pucminas.br\"];\n d_software -> d_3 [label=\"Não\"];\n d_software -> d_10 [label=\"Sim\"];\n d_3 -> d_prazo; d_10 -> d_prazo;\n d_prazo -> d_formulario [label=\"Sim\"];\n d_prazo -> d_data [label=\"Não\"];\n d_data -> d_prazo [label=\"Nova data · revalidar\", constraint=false];\n d_tipo -> d_software [label=\"Reserva\"];\n d_formulario -> resolveu;\n c_evento [label=\"Wi-Fi para eventos\", fillcolor=\"#ffebe5\"];\n c_tipo -> c_evento [label=\"Eventos\"];\n c_evento -> fila_crc;\n e_projetor [label=\"Projetor\", fillcolor=\"#f2e4ed\", tooltip=\"Orientar quando documentado e encaminhar à Infraestrutura.\"];\n infraestrutura [label=\"Infraestrutura — 3131-2804\", fillcolor=\"#f2e3ee\", color=\"#a77598\"];\n e_sintoma -> e_projetor;\n e_projetor -> infraestrutura;\n {rank=same; a_rede; a_mfa; orientar; c_evento; d_software; e_projetor;}\n a_rede -> a_mfa -> orientar -> c_evento -> d_software -> e_projetor [style=invis, weight=100];\n {rank=same; a_reteste; a_configurar; d_3; d_10;}\n {rank=same; a_bloqueada; d_prazo;}\n {rank=same; fim; fila_crc; infraestrutura;}\n}\n", "pendencias.md": "# Pendências documentais\n\nAs regras operacionais do CRC têm prioridade. As pendências abaixo não bloqueiam o desenho e não criam ramificações adicionais. Quando o conteúdo disponível não permitir resolver o caso, o destino é a fila humana do CRC.\n\n| Assunto | Evidência | Tratamento |\n| --- | --- | --- |\n| Senha PUC Mail | O texto exige exatamente 10 caracteres; a captura de tela apresenta outro critério de tamanho. | Não escolher um critério conflitante como definitivo. Registrar para correção da base. |\n| Gravações Teams | O tutorial descreve acesso a vídeos das equipes; a observação diz que a gravação fica disponível para quem a iniciou. | Usar somente o conteúdo documentado, sem prometer permissões não estabelecidas. |\n| Endereço SGL | O PDF de senha indica `https://icei.pucminas.br/sgl/`; o documento Canvas indica `https://sgl.icei.pucminas.br/`. | Registrar os dois endereços sem selecionar arbitrariamente um endereço canônico. Não é necessário colocar URLs nas caixas. |\n| Recuperação MFA | O documento explica configuração de backup, mas não detalha a restauração. | Verificar possibilidade de recuperação; não inventar passos. Se não resolver, CRC. |\n| Calendário de reservas | Os prazos de 3 e 10 dias úteis estão definidos, mas não há calendário institucional nem convenção completa de contagem na documentação. | O fluxo de prazo e retorno para nova data está implementado. A aplicação é um visualizador do atendimento; não apresenta cálculo de data como validação institucional. |\n\n## Divergências já resolvidas pelas regras aprovadas\n\n- Login acadêmico correto: `codigodepessoa@pucminas.edu.br`. A referência a `@sga.pucminas.br` no texto de Teams não deve orientar o atendimento.\n- Reserva de LAB: Corpo Docente **e** Corpo Técnico Administrativo podem solicitar. A conta do formulário é administrativa `@pucminas.br`. Não há filtro obrigatório “É professor?”.\n- Prazo insuficiente: informar a antecedência mínima, solicitar nova data e revalidar. Não encerrar nem encaminhar automaticamente por esse motivo.\n- Wi-Fi de eventos: fila CRC. Não reproduzir o trecho incompleto do manual nem criar equipe intermediária.\n- Conta administrativa bloqueada: orientar reset da rede, confirmar a conclusão e testar acesso antes de encaminhar por persistência do bloqueio.\n- MFA manual: equipe do CRC. Nenhum reset automatizado foi presumido.\n- Projetor: Infraestrutura — 3131-2804. O telefone do CRC continua sendo 3131-2471.\n", "referencias.md": "# Referências do atendimento\n\nA base é composta pelos 13 documentos de atendimento e pelas regras operacionais do CRC. O catálogo `src/catalog.json` relaciona cada bloco às suas fontes.\n\n| Documento de atendimento | Aplicação no fluxo |\n| --- | --- |\n| Acesso ao SGA | Autenticação por vínculo/origem, alternativa Microsoft 365 e utilização do SGA. |\n| Como conectar no WIFI | Wi-Fi acadêmico, particularidade Motorola, visitantes e funcionários com autorização da chefia. Eventos são encaminhados ao CRC. |\n| MFA | Configuração, autenticação e backup. Reset manual realizado pelo CRC. |\n| Office 365 | Acesso com credencial acadêmica; licença apenas da versão online. |\n| PUC Mail - Aluno | Primeiro acesso, alteração/recuperação de senha e encaminhamento de mensagens. |\n| PUC Mobile - Como funciona | Uso do aplicativo; credenciais do SGA. |\n| Reserva de LAB | Campus Lourdes, formulário e prazos de 3/10 dias úteis; solicitantes e retorno de data conforme correções aprovadas. |\n| Suporte em sala de aula | Sintomas de energia, imagem, rede, domínio e equipamento; projetor para Infraestrutura. |\n| Teams - Acesso e informações importantes | Acesso, aulas, reuniões e gravações; domínio acadêmico institucional. |\n| TROCA DE SENHA - CANVAS_TEAMS.pdf | Reset acadêmico compartilhado e espera documentada de 15 minutos para propagação. |\n| VPN Global Protect.pdf | Instalação/configuração, conta e senha da rede administrativa, MFA e confirmação da conexão. |\n| Abertura de Chamado - Aluno - CSC | Orientação compartilhada de abertura de solicitação no CSC. |\n| Acesso ao Canvas | Credencial acadêmica, conta de calouros, erros de usuário/conta/senha e serviços que compartilham senha. |\n\n## Critério de precedência\n\nAs regras operacionais vigentes orientam o atendimento. Contradições não corrigidas ficam em `docs/pendencias.md`. Somente informações que alteram uma decisão aparecem nas caixas. Tutoriais, critérios completos de senha, URLs e campos permanecem na base do OmniChat.\n\n## Publicação técnica\n\nA configuração utiliza o fluxo oficial de publicação de artefatos estáticos: [GitHub Pages com workflows personalizados](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages). Essa fonte técnica não é uma fonte de procedimentos do atendimento.\n"};
+const CATALOG = {"crc": {"title": "Atendimento CRC — 3131-2471", "area": "Atendimento global", "aliases": ["telefone", "centro de recursos computacionais"], "detail": "Entrada do atendimento. O telefone 3131-2471 pertence ao CRC.", "sources": ["Regras operacionais aprovadas"], "nodeId": "crc"}, "whatsapp": {"title": "WhatsApp", "area": "Atendimento global", "aliases": ["mensagem", "entrada"], "detail": "Canal pelo qual o OmniChat recebe a solicitação.", "sources": ["Regras operacionais aprovadas"], "nodeId": "whatsapp"}, "interpretar": {"title": "OmniChat interpreta a demanda", "area": "Atendimento global", "aliases": ["agente"], "detail": "Interpretar primeiro a necessidade, sem triagem obrigatória por perfil.", "sources": ["Regras operacionais aprovadas"], "nodeId": "interpretar"}, "assunto": {"title": "Identifica o assunto", "area": "Atendimento global", "aliases": ["topico", "intencao"], "detail": "Identificar o procedimento relevante a partir da mensagem.", "sources": ["Regras operacionais aprovadas"], "nodeId": "interpretar"}, "consultar": {"title": "Consulta a documentação", "area": "Atendimento global", "aliases": ["base", "documentos"], "detail": "Consultar a documentação e as regras operacionais do CRC. Se o caso não estiver coberto ou o procedimento for insuficiente, encaminhar ao CRC.", "sources": ["13 documentos de atendimento", "Regras operacionais aprovadas"], "nodeId": "consultar"}, "contexto": {"title": "Contexto suficiente?", "area": "Atendimento global", "aliases": ["informacao"], "detail": "Pedir informação adicional somente quando ela for necessária para identificar o procedimento aplicável.", "sources": ["Regras operacionais aprovadas"], "nodeId": "consultar"}, "esclarecer": {"title": "Solicitar informação necessária", "area": "Atendimento global", "aliases": ["pergunta", "perfil"], "detail": "Não aplicar questionário inicial obrigatório. Identificar vínculo somente se ele alterar o procedimento.", "sources": ["Regras operacionais aprovadas"], "nodeId": "consultar"}, "topico": {"title": "Selecionar procedimento", "area": "Atendimento global", "aliases": ["categorias", "grupos"], "detail": "Os cinco agrupamentos organizam o desenho; não são um menu que o usuário precisa percorrer.", "sources": ["Regras operacionais aprovadas"], "nodeId": "consultar"}, "a_tipo": {"title": "Acesso e credenciais", "area": "A · Acesso, credenciais e autenticação", "aliases": ["login", "autenticacao", "senha", "credenciais"], "detail": "Distinguir credencial acadêmica, SGA, PUC Mail, senhas administrativas e MFA. Reutilizar este grupo a partir de plataformas ou conectividade.", "sources": ["Regras operacionais aprovadas"], "nodeId": "a_tipo"}, "a_academica": {"title": "Credencial acadêmica compartilhada", "area": "A · Acesso, credenciais e autenticação", "aliases": ["senha", "canvas", "teams", "office 365", "wifi", "wi fi", "computadores", "sgl", "reset"], "detail": "Login acadêmico: codigodepessoa@pucminas.edu.br. Compartilhar o procedimento entre os serviços documentados; no Wi-Fi, o campo de identidade segue o formato próprio do tutorial. Após o reset, respeitar os 15 minutos documentados antes de avaliar o resultado. Os dois endereços do SGL permanecem registrados como pendência.", "sources": ["Acesso ao Canvas", "Troca de Senha — Canvas / Teams", "Office 365", "Como conectar no Wi-Fi", "Teams — Acesso e informações importantes", "Correção explícita do domínio acadêmico"], "nodeId": "a_tipo"}, "a_sga": {"title": "SGA e PUC Mobile — autenticação", "area": "A · Acesso, credenciais e autenticação", "aliases": ["matricula", "origem", "vinculo", "graduacao", "iftdj", "iec", "stricto", "lato", "ead"], "detail": "Identificar vínculo/origem quando necessário. PUC Mobile usa as credenciais do SGA. O acesso alternativo pelo Microsoft 365 documentado no SGA reutiliza a credencial acadêmica; a senha própria do SGA não é unificada com ela.", "sources": ["Acesso ao SGA", "PUC Mobile — Como funciona"], "nodeId": "a_tipo"}, "a_mail": {"title": "PUC Mail — primeiro acesso e recuperação", "area": "A · Acesso, credenciais e autenticação", "aliases": ["email aluno", "e mail", "senha", "alterar"], "detail": "Consultar o PUC Mail pelo SGA para primeiro acesso, alteração ou recuperação. Não confundir sua senha com a administrativa. A divergência documental sobre tamanho da senha está registrada separadamente.", "sources": ["PUC Mail — Aluno"], "nodeId": "a_tipo"}, "a_admin": {"title": "Senhas administrativas", "area": "A · Acesso, credenciais e autenticação", "aliases": ["intra", "conta bloqueada", "bloqueio", "pucminas.br"], "detail": "@pucminas.br: senha da rede para e-mail e computador administrativo; senha de sistemas para sistemas administrativos. Conta bloqueada segue primeiro para reset da rede.", "sources": ["Regras operacionais aprovadas", "VPN GlobalProtect"], "nodeId": "a_tipo"}, "a_sistemas": {"title": "Redefinir senha de acesso aos sistemas", "area": "A · Acesso, credenciais e autenticação", "aliases": ["intra", "senha administrativa"], "detail": "Usar a opção específica do Portal INTRA. Essa senha não é a senha da rede administrativa.", "sources": ["Regras operacionais aprovadas"], "nodeId": "a_tipo"}, "a_rede": {"title": "Redefinir senha da rede", "area": "A · Acesso, credenciais e autenticação", "aliases": ["intra", "bloqueio", "conta bloqueada", "email administrativo", "computador administrativo"], "detail": "Orientar a opção de reset da rede no INTRA, inclusive quando o usuário informar bloqueio. Tentar o reset antes do encaminhamento.", "sources": ["Regras operacionais aprovadas"], "nodeId": "a_rede"}, "a_reset": {"title": "Reset da rede concluído?", "area": "A · Acesso, credenciais e autenticação", "aliases": ["bloqueio"], "detail": "Se concluído, testar novamente. Se não for possível concluir pelas orientações disponíveis, aplicar a regra geral e encaminhar ao CRC.", "sources": ["Regras operacionais aprovadas"], "nodeId": "a_rede"}, "a_reteste": {"title": "Testar novamente o acesso administrativo", "area": "A · Acesso, credenciais e autenticação", "aliases": ["conta bloqueada", "desbloqueio"], "detail": "Depois do reset concluído, verificar o acesso. Se voltar, encerrar; se continuar bloqueado ou com problema, fila CRC.", "sources": ["Regras operacionais aprovadas"], "nodeId": "a_reteste"}, "a_mfa": {"title": "MFA", "area": "A · Acesso, credenciais e autenticação", "aliases": ["authenticator", "multifator", "autenticacao", "backup", "celular"], "detail": "Aplicar todas as verificações documentadas de configuração, cadastro, autenticação e backup. O agente não executa reset manual de MFA. Verificar se é possível recuperar com o procedimento e backup disponíveis. Quando não for possível, ou houver necessidade de reset manual, encaminhar ao CRC. Não inventar restauração não documentada.", "sources": ["MFA", "Regras operacionais aprovadas"], "nodeId": "a_mfa"}, "a_recuperar": {"title": "Perda ou troca do dispositivo", "area": "A · Acesso, credenciais e autenticação", "aliases": ["mfa", "celular", "aparelho"], "detail": "Verificar possibilidade de recuperação quando houver perda ou troca do aparelho.", "sources": ["MFA", "Regras operacionais aprovadas"], "nodeId": "a_mfa"}, "a_backup": {"title": "Backup do Authenticator disponível?", "area": "A · Acesso, credenciais e autenticação", "aliases": ["mfa", "restaurar", "recuperar"], "detail": "Verificar existência de backup antes de encaminhar para reset manual. A existência de backup não garante recuperação bem-sucedida.", "sources": ["MFA", "Regras operacionais aprovadas"], "nodeId": "a_mfa"}, "a_restaurar": {"title": "Verificar possibilidade de recuperação MFA", "area": "A · Acesso, credenciais e autenticação", "aliases": ["backup", "restauracao"], "detail": "Usar somente o conteúdo documentado. A documentação não detalha a restauração; não inventar passos. Se o conteúdo disponível não permitir resolver, encaminhar ao CRC.", "sources": ["MFA", "Regras operacionais aprovadas"], "nodeId": "a_mfa"}, "a_configurar": {"title": "Configurar e autenticar com MFA", "area": "A · Acesso, credenciais e autenticação", "aliases": ["authenticator", "cadastro"], "detail": "Orientar configuração e autenticação conforme a documentação de atendimento.", "sources": ["MFA"], "nodeId": "a_configurar"}, "a_manual": {"title": "Reset manual de MFA necessário?", "area": "A · Acesso, credenciais e autenticação", "aliases": ["sem backup", "crc"], "detail": "Sem backup e com necessidade de reset manual, encaminhar à equipe do CRC.", "sources": ["Regras operacionais aprovadas"], "nodeId": "a_mfa"}, "b_entrada": {"title": "Plataformas e aplicativos", "area": "B · Plataformas e aplicativos", "aliases": ["sga", "canvas", "teams", "office", "mobile", "puc mail"], "detail": "Consolidar dúvidas de utilização e funcionamento das seis plataformas.", "sources": ["Acesso ao SGA", "Acesso ao Canvas", "Teams — Acesso e informações importantes", "Office 365", "PUC Mobile — Como funciona", "PUC Mail — Aluno"], "nodeId": "b_entrada"}, "b_login": {"title": "Problema de credencial?", "area": "B · Plataformas e aplicativos", "aliases": ["senha", "login"], "detail": "Reutilizar Acesso, credenciais e autenticação quando a causa for login/senha/MFA. Não criar reset separado por plataforma.", "sources": ["Regras operacionais aprovadas"], "nodeId": "b_entrada"}, "b_uso": {"title": "Acesso, uso e disponibilidade de plataformas", "area": "B · Plataformas e aplicativos", "aliases": ["calouro", "canvas", "office online", "licenca", "reuniao", "gravacoes", "notas", "faltas", "financeiro", "encaminhamento email"], "detail": "Canvas: explicar a criação da conta de calouros na semana de início das aulas. Office: licença apenas online. Orientar recursos documentados de SGA, PUC Mobile, Teams e PUC Mail. Não prometer acesso a gravações além do documentado.", "sources": ["Acesso ao Canvas", "Office 365", "Acesso ao SGA", "PUC Mobile — Como funciona", "Teams — Acesso e informações importantes", "PUC Mail — Aluno"], "nodeId": "b_entrada"}, "c_tipo": {"title": "Rede e conectividade", "area": "C · Rede e conectividade", "aliases": ["wifi", "wi fi", "vpn"], "detail": "Identificar qual conexão está envolvida e consultar o procedimento correspondente.", "sources": ["Como conectar no Wi-Fi", "VPN GlobalProtect"], "nodeId": "c_tipo"}, "c_wifi": {"title": "Modalidade de Wi-Fi", "area": "C · Rede e conectividade", "aliases": ["wifi", "rede sem fio"], "detail": "Identificar a modalidade somente porque ela muda o procedimento: acadêmico, visitante, funcionário ou evento.", "sources": ["Como conectar no Wi-Fi", "Regras operacionais aprovadas"], "nodeId": "c_tipo"}, "c_academico": {"title": "Wi-Fi acadêmico", "area": "C · Rede e conectividade", "aliases": ["wifi", "motorola", "android", "ios", "conexao"], "detail": "Orientar a configuração do dispositivo conforme documentação, incluindo a particularidade Motorola quando aplicável. Senha compartilhada com a rede acadêmica.", "sources": ["Como conectar no Wi-Fi"], "nodeId": "c_tipo"}, "c_visitante": {"title": "Wi-Fi para visitantes", "area": "C · Rede e conectividade", "aliases": ["wifi", "temporario"], "detail": "Orientar a solicitação documentada no CSC. Os dados solicitados e a navegação ficam na base documental.", "sources": ["Como conectar no Wi-Fi", "Abertura de Chamado — Aluno — CSC"], "nodeId": "c_tipo"}, "c_funcionario": {"title": "Wi-Fi para funcionários", "area": "C · Rede e conectividade", "aliases": ["wifi", "chefia", "autorizacao"], "detail": "Orientar solicitação no CSC com autorização da chefia, conforme documentação.", "sources": ["Como conectar no Wi-Fi"], "nodeId": "c_tipo"}, "c_evento": {"title": "Wi-Fi para eventos", "area": "C · Rede e conectividade", "aliases": ["wifi", "evento"], "detail": "Encaminhar diretamente para a fila do CRC, sem completar o procedimento por inferência.", "sources": ["Regra operacional — Wi-Fi para eventos"], "nodeId": "c_evento"}, "c_vpn": {"title": "VPN GlobalProtect", "area": "C · Rede e conectividade", "aliases": ["global protect", "rede administrativa", "conexao remota"], "detail": "Orientar instalação, configuração, autenticação e confirmação da conexão conforme o manual. A VPN usa a senha da rede administrativa e MFA.", "sources": ["VPN GlobalProtect"], "nodeId": "c_tipo"}, "c_auth": {"title": "Falha de credencial ou MFA na conexão?", "area": "C · Rede e conectividade", "aliases": ["vpn", "wifi", "senha"], "detail": "Se o problema for autenticação, reutilizar o procedimento correspondente do grupo A.", "sources": ["VPN GlobalProtect", "Como conectar no Wi-Fi", "Regras operacionais aprovadas"], "nodeId": "c_tipo"}, "d_tipo": {"title": "Solicitações e serviços", "area": "D · Solicitações e serviços", "aliases": ["laboratorio", "reserva", "csc", "chamado"], "detail": "Identificar a solicitação; casos não cobertos pela documentação seguem a regra geral de encaminhamento ao CRC.", "sources": ["Reserva de LAB", "Abertura de Chamado — Aluno — CSC"], "nodeId": "d_tipo"}, "d_lab": {"title": "Reserva de LAB", "area": "D · Solicitações e serviços", "aliases": ["laboratorio", "agendamento", "lourdes", "professor", "docente", "tecnico administrativo"], "detail": "Processo documentado para Campus Lourdes. Corpo Docente e Corpo Técnico Administrativo podem solicitar. Acesso ao formulário com conta administrativa @pucminas.br, sem filtro “É professor?”.", "sources": ["Reserva de LAB", "Regra operacional — solicitante da reserva"], "nodeId": "d_software"}, "d_software": {"title": "Haverá necessidade de software?", "area": "D · Solicitações e serviços", "aliases": ["reserva", "programa"], "detail": "Definir a antecedência mínima aplicável: com software, 10 dias úteis; sem software, 3 dias úteis.", "sources": ["Reserva de LAB", "Regras operacionais aprovadas"], "nodeId": "d_software"}, "d_3": {"title": "Reserva sem software — 3 dias úteis", "area": "D · Solicitações e serviços", "aliases": ["prazo", "laboratorio"], "detail": "Antecedência mínima de 3 dias úteis.", "sources": ["Reserva de LAB"], "nodeId": "d_3"}, "d_10": {"title": "Reserva com software — 10 dias úteis", "area": "D · Solicitações e serviços", "aliases": ["prazo", "laboratorio"], "detail": "Antecedência mínima de 10 dias úteis.", "sources": ["Reserva de LAB"], "nodeId": "d_10"}, "d_prazo": {"title": "Prazo da reserva atendido?", "area": "D · Solicitações e serviços", "aliases": ["data", "antecedencia"], "detail": "Se atendido, orientar o formulário. Caso contrário, informar o prazo e solicitar nova data. Este desenho representa a regra; não executa cálculo de calendário.", "sources": ["Reserva de LAB", "Regras operacionais aprovadas"], "nodeId": "d_prazo"}, "d_data": {"title": "Reserva fora do prazo — solicitar nova data", "area": "D · Solicitações e serviços", "aliases": ["data", "prazo insuficiente", "retorno"], "detail": "Solicitar nova data e reavaliar a antecedência. Não encerrar nem encaminhar automaticamente apenas porque a primeira data estava fora do prazo.", "sources": ["Regra operacional — fora do prazo"], "nodeId": "d_data"}, "d_formulario": {"title": "Formulário de reserva — conta administrativa", "area": "D · Solicitações e serviços", "aliases": ["forms", "pucminas.br", "docente", "tecnico"], "detail": "Orientar preenchimento do formulário documentado. O acesso é administrativo @pucminas.br. Solicitar não equivale a confirmar a reserva.", "sources": ["Reserva de LAB", "Regras operacionais aprovadas"], "nodeId": "d_formulario"}, "d_csc": {"title": "Abertura de chamado no CSC", "area": "D · Solicitações e serviços", "aliases": ["solicitacao", "servicos", "visitantes", "funcionarios"], "detail": "Usar este mesmo procedimento sempre que a documentação indicar abertura de solicitação no CSC. Não reproduzir sua árvore inteira no desenho.", "sources": ["Abertura de Chamado — Aluno — CSC", "Como conectar no Wi-Fi", "MFA"], "nodeId": "d_tipo"}, "e_sintoma": {"title": "Suporte em Sala de Aula", "area": "E · Suporte em Sala de Aula", "aliases": ["sala", "laboratorio", "equipamento", "manutencao"], "detail": "Identificar o sintoma e selecionar as verificações documentadas.", "sources": ["Suporte em Sala de Aula"], "nodeId": "e_sintoma"}, "e_energia": {"title": "Computador não liga", "area": "E · Suporte em Sala de Aula", "aliases": ["energia", "alimentacao", "cabos"], "detail": "Aplicar as verificações documentadas de alimentação e sinais de energia.", "sources": ["Suporte em Sala de Aula"], "nodeId": "e_sintoma"}, "e_imagem": {"title": "Computador liga sem imagem", "area": "E · Suporte em Sala de Aula", "aliases": ["monitor", "hdmi", "vga"], "detail": "Verificar monitor e conexões HDMI/VGA conforme documentação.", "sources": ["Suporte em Sala de Aula"], "nodeId": "e_sintoma"}, "e_conexao": {"title": "Conexão em sala — rede ou domínio", "area": "E · Suporte em Sala de Aula", "aliases": ["cabo", "confianca", "dominio", "computador"], "detail": "Verificar rede conforme o documento. Identificar a mensagem de falha de confiança com o domínio. Não inventar um procedimento de reparo do domínio.", "sources": ["Suporte em Sala de Aula"], "nodeId": "e_sintoma"}, "e_equipamento": {"title": "Falha em equipamento", "area": "E · Suporte em Sala de Aula", "aliases": ["mouse", "teclado", "monitor", "computador"], "detail": "Identificar avaria ou mau funcionamento no equipamento documentado. Se não resolver, fila CRC.", "sources": ["Suporte em Sala de Aula"], "nodeId": "e_sintoma"}, "e_projetor": {"title": "Projetor", "area": "E · Suporte em Sala de Aula", "aliases": ["projecao", "hdmi", "vga", "imagem", "infraestrutura"], "detail": "Orientar quando houver procedimento documentado e encaminhar para Infraestrutura — 3131-2804.", "sources": ["Suporte em Sala de Aula"], "nodeId": "e_projetor"}, "orientar": {"title": "Orientação e verificações documentadas", "area": "Atendimento global", "aliases": ["procedimento", "diagnostico"], "detail": "Aplicar somente o procedimento sustentado pelos documentos e regras aprovadas. Tutoriais, URLs e campos continuam na base documental.", "sources": ["13 documentos de atendimento", "Regras operacionais aprovadas"], "nodeId": "orientar"}, "resolveu": {"title": "Resolveu?", "area": "Atendimento global", "aliases": ["resultado", "confirmacao"], "detail": "Confirmar se a necessidade foi atendida. Acesso ainda bloqueado após reset é resultado não resolvido.", "sources": ["Regras operacionais aprovadas"], "nodeId": "resolveu"}, "fim": {"title": "Encerrar atendimento", "area": "Atendimento global", "aliases": ["resolvido", "solucao"], "detail": "Encerrar quando a orientação ou verificação resolver a necessidade.", "sources": ["Regras operacionais aprovadas"], "nodeId": "fim"}, "fila_crc": {"title": "Fila humana do CRC", "area": "Atendimento global", "aliases": ["encaminhar", "escalonar", "suporte humano"], "detail": "Destino padrão quando o caso não é coberto, o procedimento é insuficiente ou as verificações não resolvem. Também recebe Wi-Fi de eventos e reset manual MFA.", "sources": ["Regras operacionais aprovadas"], "nodeId": "fila_crc"}, "infraestrutura": {"title": "Infraestrutura — 3131-2804", "area": "E · Suporte em Sala de Aula", "aliases": ["projetor", "telefone"], "detail": "Destino documentado para problemas de projetor.", "sources": ["Suporte em Sala de Aula"], "nodeId": "infraestrutura"}, "a_bloqueada": {"title": "Continua bloqueada após reset da rede?", "area": "A · Acesso, credenciais e autenticação", "aliases": ["bloqueio", "conta bloqueada"], "detail": "Após concluir o reset da senha da rede e testar novamente: se não houver bloqueio, encerrar; se continuar bloqueada, fila humana do CRC. Se não for possível concluir o reset, aplicar a regra geral de falha.", "sources": ["Regras operacionais aprovadas"], "nodeId": "a_bloqueada"}, "teams": {"title": "Teams", "area": "B · Plataformas e aplicativos", "detail": "Acesso pelo SGA, Canvas, web ou aplicativo; aulas, reuniões e gravações conforme documentação. Login acadêmico codigodepessoa@pucminas.edu.br. Senha utiliza o procedimento acadêmico compartilhado. Não prometer disponibilidade de gravações além do documentado.", "sources": ["Teams — Acesso e informações importantes", "Troca de Senha — Canvas / Teams"], "aliases": ["aulas", "reuniao", "gravacoes"], "nodeId": "b_entrada"}, "canvas": {"title": "Canvas", "area": "B · Plataformas e aplicativos", "detail": "Acesso, usuário incorreto, conta inexistente e disponibilidade conforme documentação. Calouros: criação da conta na semana de início das aulas. Problemas de senha reutilizam a credencial acadêmica compartilhada.", "sources": ["Acesso ao Canvas", "Troca de Senha — Canvas / Teams"], "aliases": ["calouro", "aula"], "nodeId": "b_entrada"}, "office": {"title": "Office 365", "area": "B · Plataformas e aplicativos", "detail": "Orientar acesso à versão online disponibilizada pela universidade. Não criar instalação ou licenciamento desktop. Credencial acadêmica compartilhada.", "sources": ["Office 365"], "aliases": ["licenca", "online"], "nodeId": "b_entrada"}, "mobile": {"title": "PUC Mobile", "area": "B · Plataformas e aplicativos", "detail": "Horários, notas, faltas, situação financeira, credenciais e carteirinha conforme documentação. Acesso com credenciais correspondentes ao SGA.", "sources": ["PUC Mobile — Como funciona"], "aliases": ["notas", "faltas", "financeiro", "carteirinha"], "nodeId": "b_entrada"}, "sga": {"title": "SGA", "area": "B · Plataformas e aplicativos", "detail": "Orientar acesso e funcionalidades documentadas. Identificar o vínculo somente quando alterar o procedimento. Autenticação própria do SGA; não unificar automaticamente com a credencial acadêmica.", "sources": ["Acesso ao SGA"], "aliases": ["graduacao", "vinculo"], "nodeId": "b_entrada"}, "mail": {"title": "PUC Mail", "area": "B · Plataformas e aplicativos", "detail": "Primeiro acesso, acesso à conta, alteração de senha e recuperação conforme documentação; encaminhamento automático de mensagens quando solicitado. Não confundir com senha administrativa.", "sources": ["PUC Mail — Aluno"], "aliases": ["email", "encaminhamento automatico"], "nodeId": "b_entrada"}};
+/* Navegação de um único SVG. Busca destaca e centraliza, nunca oculta áreas. */
+'use strict';
+const viewport=document.getElementById('viewport'), flow=document.getElementById('flow');
+const search=document.getElementById('search'), results=document.getElementById('search-results');
+const inspector=document.getElementById('inspector'), announce=document.getElementById('announce');
+const width=flow.viewBox.baseVal.width,height=flow.viewBox.baseVal.height;
+const nodes=new Map([...flow.querySelectorAll('.node')].map(el=>[el.querySelector('title').textContent,el]));
+// Um tópico documental pode apontar para um bloco-resumo do SVG.
+const topicNode=id=>nodes.get(CATALOG[id]?.nodeId||id);
+const state={x:0,y:0,scale:1};let active=null;
+flow.style.width=width+'px';flow.style.height=height+'px';document.body.classList.add('enhanced');
+function paint(){flow.style.transform=`translate(${state.x}px,${state.y}px) scale(${state.scale})`;document.getElementById('zoom-level').textContent=Math.round(state.scale*100)+'%'}
+function fit(){state.scale=Math.min(viewport.clientWidth/width,viewport.clientHeight/height)*.95;state.x=(viewport.clientWidth-width*state.scale)/2;state.y=(viewport.clientHeight-height*state.scale)/2;paint()}
+function zoom(factor,x=viewport.clientWidth/2,y=viewport.clientHeight/2){const next=Math.max(.02,Math.min(4,state.scale*factor)),ratio=next/state.scale;state.x=x-(x-state.x)*ratio;state.y=y-(y-state.y)*ratio;state.scale=next;paint()}
+function cleanHighlights(){nodes.forEach(el=>el.classList.remove('search-match','selected'))}
+function hideResults(){results.hidden=true;search.setAttribute('aria-expanded','false')}
+function overview(){search.value='';hideResults();cleanHighlights();inspector.hidden=true;active=null;history.replaceState(null,'',location.pathname+location.search);fit();announce.textContent='Fluxograma completo visível.'}
+function normalize(text){return text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+function findTopics(query){const q=normalize(query);if(!q)return [];return Object.entries(CATALOG).map(([id,item])=>{let title=normalize(item.title),terms=normalize([item.title,item.area,...item.aliases].join(' '));return {id,item,score:title===q?0:title.startsWith(q)?1:title.includes(q)?2:3,match:q.split(' ').every(t=>terms.includes(t))}}).filter(x=>x.match&&!!topicNode(x.id)).sort((a,b)=>a.score-b.score||a.item.title.localeCompare(b.item.title,'pt-BR'))}
+function select(id,{move=true,hash=true}={}){
+ const el=topicNode(id),item=CATALOG[id];if(!el||!item)return;
+ nodes.forEach(n=>n.classList.remove('selected'));el.classList.add('selected');active=id;
+ document.getElementById('topic-title').textContent=item.title;document.getElementById('topic-detail').textContent=item.detail;
+ const list=document.getElementById('topic-sources');list.replaceChildren();item.sources.forEach(source=>{let li=document.createElement('li');li.textContent=source;list.append(li)});
+ inspector.hidden=false;hideResults();
+ if(move){
+  // SVG group transform (including Graphviz's translation) → root coordinates.
+  const rect=el.getBoundingClientRect(),vp=viewport.getBoundingClientRect();
+  const cx=(rect.left-vp.left+rect.width/2-state.x)/state.scale,cy=(rect.top-vp.top+rect.height/2-state.y)/state.scale;
+  const small=viewport.clientWidth<700;const space=small?viewport.clientWidth:Math.max(300,viewport.clientWidth-350);
+  const newScale=Math.min(1.5,Math.max(.6,Math.min(space*.65/(rect.width/state.scale),viewport.clientHeight*.35/(rect.height/state.scale))));
+  state.scale=newScale;state.x=(small?viewport.clientWidth*.5:space*.5)-cx*newScale;state.y=viewport.clientHeight*(small?.7:.5)-cy*newScale;paint();
+ }
+ if(hash)history.replaceState(null,'','#'+encodeURIComponent(id));announce.textContent='Tópico localizado: '+item.title;
+}
+function renderResults(){const matches=findTopics(search.value);cleanHighlights();results.replaceChildren();if(!normalize(search.value)){hideResults();return}
+ matches.forEach(({id})=>topicNode(id).classList.add('search-match'));
+ if(!matches.length){let p=document.createElement('p');p.textContent='Nenhum tópico encontrado. Tente senha, MFA, VPN, LAB ou projetor.';results.append(p)}
+ matches.slice(0,15).forEach(({id,item})=>{let b=document.createElement('button');b.type='button';b.append(document.createTextNode(item.title));let sub=document.createElement('small');sub.textContent=item.area;b.append(sub);b.onclick=()=>select(id);results.append(b)});
+ results.hidden=false;search.setAttribute('aria-expanded','true');announce.textContent=matches.length+' tópicos encontrados.';
+}
+search.addEventListener('input',renderResults);search.addEventListener('focus',()=>{if(search.value)renderResults()});search.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();let first=findTopics(search.value)[0];if(first)select(first.id)}else if(e.key==='ArrowDown'){e.preventDefault();results.querySelector('button')?.focus()}else if(e.key==='Escape'){hideResults();search.blur()}});
+results.addEventListener('keydown',e=>{let buttons=[...results.querySelectorAll('button')],i=buttons.indexOf(document.activeElement);if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();buttons[(i+(e.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length]?.focus()}else if(e.key==='Escape'){hideResults();search.focus()}});
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('.search-box'))hideResults()});
+// Pan e pinch-to-zoom por Pointer Events; nenhuma seleção altera os nós do fluxo.
+const pointers=new Map();let moved=false,start=null;
+viewport.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;moved=false;start={x:e.clientX,y:e.clientY};pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});viewport.setPointerCapture(e.pointerId);viewport.classList.add('dragging')});
+viewport.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;const before=[...pointers.values()],old=pointers.get(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(start&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>5)moved=true;
+ if(pointers.size===1){state.x+=e.clientX-old.x;state.y+=e.clientY-old.y;paint()}else if(pointers.size===2){moved=true;const after=[...pointers.values()],distance=p=>Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),d=distance(before),box=viewport.getBoundingClientRect();if(d>0){let x=(before[0].x+before[1].x)/2,y=(before[0].y+before[1].y)/2;zoom(distance(after)/d,x-box.left,y-box.top);state.x+=(after[0].x+after[1].x)/2-x;state.y+=(after[0].y+after[1].y)/2-y;paint()}}});
+viewport.addEventListener('pointerup',e=>{if(!moved&&pointers.size===1){let node=document.elementFromPoint(e.clientX,e.clientY)?.closest('.node');if(node)select(node.querySelector('title').textContent,{move:false})}pointers.delete(e.pointerId);if(!pointers.size)viewport.classList.remove('dragging')});
+for(const event of ['pointercancel','lostpointercapture'])viewport.addEventListener(event,e=>{pointers.delete(e.pointerId);if(!pointers.size)viewport.classList.remove('dragging')});
+viewport.addEventListener('wheel',e=>{e.preventDefault();const b=viewport.getBoundingClientRect();zoom(Math.exp(-e.deltaY*.0015),e.clientX-b.left,e.clientY-b.top)},{passive:false});
+for(const [id,el] of nodes){if(!CATALOG[id])continue;el.setAttribute('tabindex','0');el.setAttribute('role','button');el.setAttribute('aria-label',CATALOG[id].title);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();select(id)}})}
+document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;if(e.key==='/'){e.preventDefault();search.focus()}else if(e.key==='0'){overview()}else if(e.key==='+'||e.key==='='){zoom(1.25)}else if(e.key==='-'){zoom(1/1.25)}else if(e.key==='Escape'){inspector.hidden=true;hideResults()}else if(e.target===viewport&&e.key.startsWith('Arrow')){e.preventDefault();state.x+=e.key==='ArrowLeft'?60:e.key==='ArrowRight'?-60:0;state.y+=e.key==='ArrowUp'?60:e.key==='ArrowDown'?-60:0;paint()}});
+document.getElementById('overview').onclick=overview;document.getElementById('zoom-in').onclick=()=>zoom(1.25);document.getElementById('zoom-out').onclick=()=>zoom(1/1.25);document.getElementById('close-inspector').onclick=()=>{inspector.hidden=true};
+document.getElementById('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch{announce.textContent='Tela cheia indisponível neste navegador. Use a opção de tela cheia do navegador.'}};
+document.getElementById('print').onclick=()=>window.print();
+document.getElementById('export-svg').onclick=()=>{let copy=flow.cloneNode(true);copy.removeAttribute('style');copy.setAttribute('width',width);copy.setAttribute('height',height);copy.querySelectorAll('.selected,.search-match').forEach(n=>n.classList.remove('selected','search-match'));let url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(copy)],{type:'image/svg+xml'}));let a=document.createElement('a');a.href=url;a.download='omnichat-crc-fluxograma.svg';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+function onResize(){fit();if(active)select(active,{hash:false})}new ResizeObserver(onResize).observe(viewport);
+function openHash(){let id;try{id=decodeURIComponent(location.hash.slice(1))}catch{return}if(CATALOG[id])select(id,{hash:false})}
+window.addEventListener('hashchange',openHash);
+requestAnimationFrame(()=>{fit();openHash()});
+
+// A cópia baixada mantém referências e fonte acessíveis sem arquivos adjacentes.
+if(location.protocol==='file:'){document.querySelectorAll('footer a').forEach(link=>{const name=link.getAttribute('href').split('/').pop();if(!RESOURCES[name])return;link.addEventListener('click',e=>{e.preventDefault();const url=URL.createObjectURL(new Blob([RESOURCES[name]],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)})})}
+</script>
+</body></html>

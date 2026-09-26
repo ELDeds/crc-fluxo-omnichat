@@ -1,0 +1,919 @@
+{
+  "crc": {
+    "title": "Atendimento CRC — 3131-2471",
+    "area": "Atendimento global",
+    "aliases": [
+      "telefone",
+      "centro de recursos computacionais"
+    ],
+    "detail": "Entrada do atendimento. O telefone 3131-2471 pertence ao CRC.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "crc"
+  },
+  "whatsapp": {
+    "title": "WhatsApp",
+    "area": "Atendimento global",
+    "aliases": [
+      "mensagem",
+      "entrada"
+    ],
+    "detail": "Canal pelo qual o OmniChat recebe a solicitação.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "whatsapp"
+  },
+  "interpretar": {
+    "title": "OmniChat interpreta a demanda",
+    "area": "Atendimento global",
+    "aliases": [
+      "agente"
+    ],
+    "detail": "Interpretar primeiro a necessidade, sem triagem obrigatória por perfil.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "interpretar"
+  },
+  "assunto": {
+    "title": "Identifica o assunto",
+    "area": "Atendimento global",
+    "aliases": [
+      "topico",
+      "intencao"
+    ],
+    "detail": "Identificar o procedimento relevante a partir da mensagem.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "interpretar"
+  },
+  "consultar": {
+    "title": "Consulta a documentação",
+    "area": "Atendimento global",
+    "aliases": [
+      "base",
+      "documentos"
+    ],
+    "detail": "Consultar a documentação e as regras operacionais do CRC. Se o caso não estiver coberto ou o procedimento for insuficiente, encaminhar ao CRC.",
+    "sources": [
+      "13 documentos de atendimento",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "consultar"
+  },
+  "contexto": {
+    "title": "Contexto suficiente?",
+    "area": "Atendimento global",
+    "aliases": [
+      "informacao"
+    ],
+    "detail": "Pedir informação adicional somente quando ela for necessária para identificar o procedimento aplicável.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "consultar"
+  },
+  "esclarecer": {
+    "title": "Solicitar informação necessária",
+    "area": "Atendimento global",
+    "aliases": [
+      "pergunta",
+      "perfil"
+    ],
+    "detail": "Não aplicar questionário inicial obrigatório. Identificar vínculo somente se ele alterar o procedimento.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "consultar"
+  },
+  "topico": {
+    "title": "Selecionar procedimento",
+    "area": "Atendimento global",
+    "aliases": [
+      "categorias",
+      "grupos"
+    ],
+    "detail": "Os cinco agrupamentos organizam o desenho; não são um menu que o usuário precisa percorrer.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "consultar"
+  },
+  "a_tipo": {
+    "title": "Acesso e credenciais",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "login",
+      "autenticacao",
+      "senha",
+      "credenciais"
+    ],
+    "detail": "Distinguir credencial acadêmica, SGA, PUC Mail, senhas administrativas e MFA. Reutilizar este grupo a partir de plataformas ou conectividade.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_tipo"
+  },
+  "a_academica": {
+    "title": "Credencial acadêmica compartilhada",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "senha",
+      "canvas",
+      "teams",
+      "office 365",
+      "wifi",
+      "wi fi",
+      "computadores",
+      "sgl",
+      "reset"
+    ],
+    "detail": "Login acadêmico: codigodepessoa@pucminas.edu.br. Compartilhar o procedimento entre os serviços documentados; no Wi-Fi, o campo de identidade segue o formato próprio do tutorial. Após o reset, respeitar os 15 minutos documentados antes de avaliar o resultado. Os dois endereços do SGL permanecem registrados como pendência.",
+    "sources": [
+      "Acesso ao Canvas",
+      "Troca de Senha — Canvas / Teams",
+      "Office 365",
+      "Como conectar no Wi-Fi",
+      "Teams — Acesso e informações importantes",
+      "Correção explícita do domínio acadêmico"
+    ],
+    "nodeId": "a_tipo"
+  },
+  "a_sga": {
+    "title": "SGA e PUC Mobile — autenticação",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "matricula",
+      "origem",
+      "vinculo",
+      "graduacao",
+      "iftdj",
+      "iec",
+      "stricto",
+      "lato",
+      "ead"
+    ],
+    "detail": "Identificar vínculo/origem quando necessário. PUC Mobile usa as credenciais do SGA. O acesso alternativo pelo Microsoft 365 documentado no SGA reutiliza a credencial acadêmica; a senha própria do SGA não é unificada com ela.",
+    "sources": [
+      "Acesso ao SGA",
+      "PUC Mobile — Como funciona"
+    ],
+    "nodeId": "a_tipo"
+  },
+  "a_mail": {
+    "title": "PUC Mail — primeiro acesso e recuperação",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "email aluno",
+      "e mail",
+      "senha",
+      "alterar"
+    ],
+    "detail": "Consultar o PUC Mail pelo SGA para primeiro acesso, alteração ou recuperação. Não confundir sua senha com a administrativa. A divergência documental sobre tamanho da senha está registrada separadamente.",
+    "sources": [
+      "PUC Mail — Aluno"
+    ],
+    "nodeId": "a_tipo"
+  },
+  "a_admin": {
+    "title": "Senhas administrativas",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "intra",
+      "conta bloqueada",
+      "bloqueio",
+      "pucminas.br"
+    ],
+    "detail": "@pucminas.br: senha da rede para e-mail e computador administrativo; senha de sistemas para sistemas administrativos. Conta bloqueada segue primeiro para reset da rede.",
+    "sources": [
+      "Regras operacionais aprovadas",
+      "VPN GlobalProtect"
+    ],
+    "nodeId": "a_tipo"
+  },
+  "a_sistemas": {
+    "title": "Redefinir senha de acesso aos sistemas",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "intra",
+      "senha administrativa"
+    ],
+    "detail": "Usar a opção específica do Portal INTRA. Essa senha não é a senha da rede administrativa.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_tipo"
+  },
+  "a_rede": {
+    "title": "Redefinir senha da rede",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "intra",
+      "bloqueio",
+      "conta bloqueada",
+      "email administrativo",
+      "computador administrativo"
+    ],
+    "detail": "Orientar a opção de reset da rede no INTRA, inclusive quando o usuário informar bloqueio. Tentar o reset antes do encaminhamento.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_rede"
+  },
+  "a_reset": {
+    "title": "Reset da rede concluído?",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "bloqueio"
+    ],
+    "detail": "Se concluído, testar novamente. Se não for possível concluir pelas orientações disponíveis, aplicar a regra geral e encaminhar ao CRC.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_rede"
+  },
+  "a_reteste": {
+    "title": "Testar novamente o acesso administrativo",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "conta bloqueada",
+      "desbloqueio"
+    ],
+    "detail": "Depois do reset concluído, verificar o acesso. Se voltar, encerrar; se continuar bloqueado ou com problema, fila CRC.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_reteste"
+  },
+  "a_mfa": {
+    "title": "MFA",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "authenticator",
+      "multifator",
+      "autenticacao",
+      "backup",
+      "celular"
+    ],
+    "detail": "Aplicar todas as verificações documentadas de configuração, cadastro, autenticação e backup. O agente não executa reset manual de MFA. Verificar se é possível recuperar com o procedimento e backup disponíveis. Quando não for possível, ou houver necessidade de reset manual, encaminhar ao CRC. Não inventar restauração não documentada.",
+    "sources": [
+      "MFA",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_mfa"
+  },
+  "a_recuperar": {
+    "title": "Perda ou troca do dispositivo",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "mfa",
+      "celular",
+      "aparelho"
+    ],
+    "detail": "Verificar possibilidade de recuperação quando houver perda ou troca do aparelho.",
+    "sources": [
+      "MFA",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_mfa"
+  },
+  "a_backup": {
+    "title": "Backup do Authenticator disponível?",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "mfa",
+      "restaurar",
+      "recuperar"
+    ],
+    "detail": "Verificar existência de backup antes de encaminhar para reset manual. A existência de backup não garante recuperação bem-sucedida.",
+    "sources": [
+      "MFA",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_mfa"
+  },
+  "a_restaurar": {
+    "title": "Verificar possibilidade de recuperação MFA",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "backup",
+      "restauracao"
+    ],
+    "detail": "Usar somente o conteúdo documentado. A documentação não detalha a restauração; não inventar passos. Se o conteúdo disponível não permitir resolver, encaminhar ao CRC.",
+    "sources": [
+      "MFA",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_mfa"
+  },
+  "a_configurar": {
+    "title": "Configurar e autenticar com MFA",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "authenticator",
+      "cadastro"
+    ],
+    "detail": "Orientar configuração e autenticação conforme a documentação de atendimento.",
+    "sources": [
+      "MFA"
+    ],
+    "nodeId": "a_configurar"
+  },
+  "a_manual": {
+    "title": "Reset manual de MFA necessário?",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "sem backup",
+      "crc"
+    ],
+    "detail": "Sem backup e com necessidade de reset manual, encaminhar à equipe do CRC.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_mfa"
+  },
+  "b_entrada": {
+    "title": "Plataformas e aplicativos",
+    "area": "B · Plataformas e aplicativos",
+    "aliases": [
+      "sga",
+      "canvas",
+      "teams",
+      "office",
+      "mobile",
+      "puc mail"
+    ],
+    "detail": "Consolidar dúvidas de utilização e funcionamento das seis plataformas.",
+    "sources": [
+      "Acesso ao SGA",
+      "Acesso ao Canvas",
+      "Teams — Acesso e informações importantes",
+      "Office 365",
+      "PUC Mobile — Como funciona",
+      "PUC Mail — Aluno"
+    ],
+    "nodeId": "b_entrada"
+  },
+  "b_login": {
+    "title": "Problema de credencial?",
+    "area": "B · Plataformas e aplicativos",
+    "aliases": [
+      "senha",
+      "login"
+    ],
+    "detail": "Reutilizar Acesso, credenciais e autenticação quando a causa for login/senha/MFA. Não criar reset separado por plataforma.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "b_entrada"
+  },
+  "b_uso": {
+    "title": "Acesso, uso e disponibilidade de plataformas",
+    "area": "B · Plataformas e aplicativos",
+    "aliases": [
+      "calouro",
+      "canvas",
+      "office online",
+      "licenca",
+      "reuniao",
+      "gravacoes",
+      "notas",
+      "faltas",
+      "financeiro",
+      "encaminhamento email"
+    ],
+    "detail": "Canvas: explicar a criação da conta de calouros na semana de início das aulas. Office: licença apenas online. Orientar recursos documentados de SGA, PUC Mobile, Teams e PUC Mail. Não prometer acesso a gravações além do documentado.",
+    "sources": [
+      "Acesso ao Canvas",
+      "Office 365",
+      "Acesso ao SGA",
+      "PUC Mobile — Como funciona",
+      "Teams — Acesso e informações importantes",
+      "PUC Mail — Aluno"
+    ],
+    "nodeId": "b_entrada"
+  },
+  "c_tipo": {
+    "title": "Rede e conectividade",
+    "area": "C · Rede e conectividade",
+    "aliases": [
+      "wifi",
+      "wi fi",
+      "vpn"
+    ],
+    "detail": "Identificar qual conexão está envolvida e consultar o procedimento correspondente.",
+    "sources": [
+      "Como conectar no Wi-Fi",
+      "VPN GlobalProtect"
+    ],
+    "nodeId": "c_tipo"
+  },
+  "c_wifi": {
+    "title": "Modalidade de Wi-Fi",
+    "area": "C · Rede e conectividade",
+    "aliases": [
+      "wifi",
+      "rede sem fio"
+    ],
+    "detail": "Identificar a modalidade somente porque ela muda o procedimento: acadêmico, visitante, funcionário ou evento.",
+    "sources": [
+      "Como conectar no Wi-Fi",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "c_tipo"
+  },
+  "c_academico": {
+    "title": "Wi-Fi acadêmico",
+    "area": "C · Rede e conectividade",
+    "aliases": [
+      "wifi",
+      "motorola",
+      "android",
+      "ios",
+      "conexao"
+    ],
+    "detail": "Orientar a configuração do dispositivo conforme documentação, incluindo a particularidade Motorola quando aplicável. Senha compartilhada com a rede acadêmica.",
+    "sources": [
+      "Como conectar no Wi-Fi"
+    ],
+    "nodeId": "c_tipo"
+  },
+  "c_visitante": {
+    "title": "Wi-Fi para visitantes",
+    "area": "C · Rede e conectividade",
+    "aliases": [
+      "wifi",
+      "temporario"
+    ],
+    "detail": "Orientar a solicitação documentada no CSC. Os dados solicitados e a navegação ficam na base documental.",
+    "sources": [
+      "Como conectar no Wi-Fi",
+      "Abertura de Chamado — Aluno — CSC"
+    ],
+    "nodeId": "c_tipo"
+  },
+  "c_funcionario": {
+    "title": "Wi-Fi para funcionários",
+    "area": "C · Rede e conectividade",
+    "aliases": [
+      "wifi",
+      "chefia",
+      "autorizacao"
+    ],
+    "detail": "Orientar solicitação no CSC com autorização da chefia, conforme documentação.",
+    "sources": [
+      "Como conectar no Wi-Fi"
+    ],
+    "nodeId": "c_tipo"
+  },
+  "c_evento": {
+    "title": "Wi-Fi para eventos",
+    "area": "C · Rede e conectividade",
+    "aliases": [
+      "wifi",
+      "evento"
+    ],
+    "detail": "Encaminhar diretamente para a fila do CRC, sem completar o procedimento por inferência.",
+    "sources": [
+      "Regra operacional — Wi-Fi para eventos"
+    ],
+    "nodeId": "c_evento"
+  },
+  "c_vpn": {
+    "title": "VPN GlobalProtect",
+    "area": "C · Rede e conectividade",
+    "aliases": [
+      "global protect",
+      "rede administrativa",
+      "conexao remota"
+    ],
+    "detail": "Orientar instalação, configuração, autenticação e confirmação da conexão conforme o manual. A VPN usa a senha da rede administrativa e MFA.",
+    "sources": [
+      "VPN GlobalProtect"
+    ],
+    "nodeId": "c_tipo"
+  },
+  "c_auth": {
+    "title": "Falha de credencial ou MFA na conexão?",
+    "area": "C · Rede e conectividade",
+    "aliases": [
+      "vpn",
+      "wifi",
+      "senha"
+    ],
+    "detail": "Se o problema for autenticação, reutilizar o procedimento correspondente do grupo A.",
+    "sources": [
+      "VPN GlobalProtect",
+      "Como conectar no Wi-Fi",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "c_tipo"
+  },
+  "d_tipo": {
+    "title": "Solicitações e serviços",
+    "area": "D · Solicitações e serviços",
+    "aliases": [
+      "laboratorio",
+      "reserva",
+      "csc",
+      "chamado"
+    ],
+    "detail": "Identificar a solicitação; casos não cobertos pela documentação seguem a regra geral de encaminhamento ao CRC.",
+    "sources": [
+      "Reserva de LAB",
+      "Abertura de Chamado — Aluno — CSC"
+    ],
+    "nodeId": "d_tipo"
+  },
+  "d_lab": {
+    "title": "Reserva de LAB",
+    "area": "D · Solicitações e serviços",
+    "aliases": [
+      "laboratorio",
+      "agendamento",
+      "lourdes",
+      "professor",
+      "docente",
+      "tecnico administrativo"
+    ],
+    "detail": "Processo documentado para Campus Lourdes. Corpo Docente e Corpo Técnico Administrativo podem solicitar. Acesso ao formulário com conta administrativa @pucminas.br, sem filtro “É professor?”.",
+    "sources": [
+      "Reserva de LAB",
+      "Regra operacional — solicitante da reserva"
+    ],
+    "nodeId": "d_software"
+  },
+  "d_software": {
+    "title": "Haverá necessidade de software?",
+    "area": "D · Solicitações e serviços",
+    "aliases": [
+      "reserva",
+      "programa"
+    ],
+    "detail": "Definir a antecedência mínima aplicável: com software, 10 dias úteis; sem software, 3 dias úteis.",
+    "sources": [
+      "Reserva de LAB",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "d_software"
+  },
+  "d_3": {
+    "title": "Reserva sem software — 3 dias úteis",
+    "area": "D · Solicitações e serviços",
+    "aliases": [
+      "prazo",
+      "laboratorio"
+    ],
+    "detail": "Antecedência mínima de 3 dias úteis.",
+    "sources": [
+      "Reserva de LAB"
+    ],
+    "nodeId": "d_3"
+  },
+  "d_10": {
+    "title": "Reserva com software — 10 dias úteis",
+    "area": "D · Solicitações e serviços",
+    "aliases": [
+      "prazo",
+      "laboratorio"
+    ],
+    "detail": "Antecedência mínima de 10 dias úteis.",
+    "sources": [
+      "Reserva de LAB"
+    ],
+    "nodeId": "d_10"
+  },
+  "d_prazo": {
+    "title": "Prazo da reserva atendido?",
+    "area": "D · Solicitações e serviços",
+    "aliases": [
+      "data",
+      "antecedencia"
+    ],
+    "detail": "Se atendido, orientar o formulário. Caso contrário, informar o prazo e solicitar nova data. Este desenho representa a regra; não executa cálculo de calendário.",
+    "sources": [
+      "Reserva de LAB",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "d_prazo"
+  },
+  "d_data": {
+    "title": "Reserva fora do prazo — solicitar nova data",
+    "area": "D · Solicitações e serviços",
+    "aliases": [
+      "data",
+      "prazo insuficiente",
+      "retorno"
+    ],
+    "detail": "Solicitar nova data e reavaliar a antecedência. Não encerrar nem encaminhar automaticamente apenas porque a primeira data estava fora do prazo.",
+    "sources": [
+      "Regra operacional — fora do prazo"
+    ],
+    "nodeId": "d_data"
+  },
+  "d_formulario": {
+    "title": "Formulário de reserva — conta administrativa",
+    "area": "D · Solicitações e serviços",
+    "aliases": [
+      "forms",
+      "pucminas.br",
+      "docente",
+      "tecnico"
+    ],
+    "detail": "Orientar preenchimento do formulário documentado. O acesso é administrativo @pucminas.br. Solicitar não equivale a confirmar a reserva.",
+    "sources": [
+      "Reserva de LAB",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "d_formulario"
+  },
+  "d_csc": {
+    "title": "Abertura de chamado no CSC",
+    "area": "D · Solicitações e serviços",
+    "aliases": [
+      "solicitacao",
+      "servicos",
+      "visitantes",
+      "funcionarios"
+    ],
+    "detail": "Usar este mesmo procedimento sempre que a documentação indicar abertura de solicitação no CSC. Não reproduzir sua árvore inteira no desenho.",
+    "sources": [
+      "Abertura de Chamado — Aluno — CSC",
+      "Como conectar no Wi-Fi",
+      "MFA"
+    ],
+    "nodeId": "d_tipo"
+  },
+  "e_sintoma": {
+    "title": "Suporte em Sala de Aula",
+    "area": "E · Suporte em Sala de Aula",
+    "aliases": [
+      "sala",
+      "laboratorio",
+      "equipamento",
+      "manutencao"
+    ],
+    "detail": "Computador, rede e equipamentos seguem as verificações documentadas e a decisão comum Resolveu? (encerrar ou fila CRC). Projetor tem encaminhamento exclusivo para Infraestrutura — 3131-2804.",
+    "sources": [
+      "Suporte em Sala de Aula"
+    ],
+    "nodeId": "e_sintoma"
+  },
+  "e_energia": {
+    "title": "Computador não liga",
+    "area": "E · Suporte em Sala de Aula",
+    "aliases": [
+      "energia",
+      "alimentacao",
+      "cabos"
+    ],
+    "detail": "Aplicar as verificações documentadas de alimentação e sinais de energia.",
+    "sources": [
+      "Suporte em Sala de Aula"
+    ],
+    "nodeId": "e_sala"
+  },
+  "e_imagem": {
+    "title": "Computador liga sem imagem",
+    "area": "E · Suporte em Sala de Aula",
+    "aliases": [
+      "monitor",
+      "hdmi",
+      "vga"
+    ],
+    "detail": "Verificar monitor e conexões HDMI/VGA conforme documentação.",
+    "sources": [
+      "Suporte em Sala de Aula"
+    ],
+    "nodeId": "e_sala"
+  },
+  "e_conexao": {
+    "title": "Conexão em sala — rede ou domínio",
+    "area": "E · Suporte em Sala de Aula",
+    "aliases": [
+      "cabo",
+      "confianca",
+      "dominio",
+      "computador"
+    ],
+    "detail": "Verificar rede conforme o documento. Identificar a mensagem de falha de confiança com o domínio. Não inventar um procedimento de reparo do domínio.",
+    "sources": [
+      "Suporte em Sala de Aula"
+    ],
+    "nodeId": "e_sala"
+  },
+  "e_equipamento": {
+    "title": "Falha em equipamento",
+    "area": "E · Suporte em Sala de Aula",
+    "aliases": [
+      "mouse",
+      "teclado",
+      "monitor",
+      "computador"
+    ],
+    "detail": "Identificar avaria ou mau funcionamento no equipamento documentado. Se não resolver, fila CRC.",
+    "sources": [
+      "Suporte em Sala de Aula"
+    ],
+    "nodeId": "e_sala"
+  },
+  "e_projetor": {
+    "title": "Projetor",
+    "area": "E · Suporte em Sala de Aula",
+    "aliases": [
+      "projecao",
+      "hdmi",
+      "vga",
+      "imagem",
+      "infraestrutura"
+    ],
+    "detail": "Orientar quando houver procedimento documentado e encaminhar para Infraestrutura — 3131-2804.",
+    "sources": [
+      "Suporte em Sala de Aula"
+    ],
+    "nodeId": "e_projetor"
+  },
+  "orientar": {
+    "title": "Orientação e verificações documentadas",
+    "area": "Atendimento global",
+    "aliases": [
+      "procedimento",
+      "diagnostico"
+    ],
+    "detail": "Aplicar somente o procedimento sustentado pelos documentos e regras aprovadas. Tutoriais, URLs e campos continuam na base documental.",
+    "sources": [
+      "13 documentos de atendimento",
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "orientar"
+  },
+  "resolveu": {
+    "title": "Resolveu?",
+    "area": "Atendimento global",
+    "aliases": [
+      "resultado",
+      "confirmacao"
+    ],
+    "detail": "Confirmar se a necessidade foi atendida. Acesso ainda bloqueado após reset é resultado não resolvido.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "resolveu"
+  },
+  "fim": {
+    "title": "Encerrar atendimento",
+    "area": "Atendimento global",
+    "aliases": [
+      "resolvido",
+      "solucao"
+    ],
+    "detail": "Encerrar quando a orientação ou verificação resolver a necessidade.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "fim"
+  },
+  "fila_crc": {
+    "title": "Fila humana do CRC",
+    "area": "Atendimento global",
+    "aliases": [
+      "encaminhar",
+      "escalonar",
+      "suporte humano"
+    ],
+    "detail": "Destino padrão quando o caso não é coberto, o procedimento é insuficiente ou as verificações não resolvem. Também recebe Wi-Fi de eventos e reset manual MFA.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "fila_crc"
+  },
+  "infraestrutura": {
+    "title": "Infraestrutura — 3131-2804",
+    "area": "E · Suporte em Sala de Aula",
+    "aliases": [
+      "projetor",
+      "telefone"
+    ],
+    "detail": "Destino documentado para problemas de projetor.",
+    "sources": [
+      "Suporte em Sala de Aula"
+    ],
+    "nodeId": "infraestrutura"
+  },
+  "a_bloqueada": {
+    "title": "Continua bloqueada após reset da rede?",
+    "area": "A · Acesso, credenciais e autenticação",
+    "aliases": [
+      "bloqueio",
+      "conta bloqueada"
+    ],
+    "detail": "Após concluir o reset da senha da rede e testar novamente: se não houver bloqueio, encerrar; se continuar bloqueada, fila humana do CRC. Se não for possível concluir o reset, aplicar a regra geral de falha.",
+    "sources": [
+      "Regras operacionais aprovadas"
+    ],
+    "nodeId": "a_bloqueada"
+  },
+  "teams": {
+    "title": "Teams",
+    "area": "B · Plataformas e aplicativos",
+    "detail": "Acesso pelo SGA, Canvas, web ou aplicativo; aulas, reuniões e gravações conforme documentação. Login acadêmico codigodepessoa@pucminas.edu.br. Senha utiliza o procedimento acadêmico compartilhado. Não prometer disponibilidade de gravações além do documentado.",
+    "sources": [
+      "Teams — Acesso e informações importantes",
+      "Troca de Senha — Canvas / Teams"
+    ],
+    "aliases": [
+      "aulas",
+      "reuniao",
+      "gravacoes"
+    ],
+    "nodeId": "b_entrada"
+  },
+  "canvas": {
+    "title": "Canvas",
+    "area": "B · Plataformas e aplicativos",
+    "detail": "Acesso, usuário incorreto, conta inexistente e disponibilidade conforme documentação. Calouros: criação da conta na semana de início das aulas. Problemas de senha reutilizam a credencial acadêmica compartilhada.",
+    "sources": [
+      "Acesso ao Canvas",
+      "Troca de Senha — Canvas / Teams"
+    ],
+    "aliases": [
+      "calouro",
+      "aula"
+    ],
+    "nodeId": "b_entrada"
+  },
+  "office": {
+    "title": "Office 365",
+    "area": "B · Plataformas e aplicativos",
+    "detail": "Orientar acesso à versão online disponibilizada pela universidade. Não criar instalação ou licenciamento desktop. Credencial acadêmica compartilhada.",
+    "sources": [
+      "Office 365"
+    ],
+    "aliases": [
+      "licenca",
+      "online"
+    ],
+    "nodeId": "b_entrada"
+  },
+  "mobile": {
+    "title": "PUC Mobile",
+    "area": "B · Plataformas e aplicativos",
+    "detail": "Horários, notas, faltas, situação financeira, credenciais e carteirinha conforme documentação. Acesso com credenciais correspondentes ao SGA.",
+    "sources": [
+      "PUC Mobile — Como funciona"
+    ],
+    "aliases": [
+      "notas",
+      "faltas",
+      "financeiro",
+      "carteirinha"
+    ],
+    "nodeId": "b_entrada"
+  },
+  "sga": {
+    "title": "SGA",
+    "area": "B · Plataformas e aplicativos",
+    "detail": "Orientar acesso e funcionalidades documentadas. Identificar o vínculo somente quando alterar o procedimento. Autenticação própria do SGA; não unificar automaticamente com a credencial acadêmica.",
+    "sources": [
+      "Acesso ao SGA"
+    ],
+    "aliases": [
+      "graduacao",
+      "vinculo"
+    ],
+    "nodeId": "b_entrada"
+  },
+  "mail": {
+    "title": "PUC Mail",
+    "area": "B · Plataformas e aplicativos",
+    "detail": "Primeiro acesso, acesso à conta, alteração de senha e recuperação conforme documentação; encaminhamento automático de mensagens quando solicitado. Não confundir com senha administrativa.",
+    "sources": [
+      "PUC Mail — Aluno"
+    ],
+    "aliases": [
+      "email",
+      "encaminhamento automatico"
+    ],
+    "nodeId": "b_entrada"
+  },
+  "e_sala": {
+    "title": "Computador / Rede / Equipamentos",
+    "area": "E · Suporte em Sala de Aula",
+    "aliases": [
+      "energia",
+      "imagem",
+      "conexao",
+      "dominio",
+      "equipamentos"
+    ],
+    "detail": "Aplicar as verificações documentadas para computador sem energia, computador ligado sem imagem, conexão/rede/domínio e falhas em mouse, teclado, monitor ou computador. Seguir o fluxo normal: resolveu, encerrar; não resolveu, fila humana do CRC. Somente projetor é encaminhado à Infraestrutura — 3131-2804.",
+    "sources": [
+      "Suporte em Sala de Aula",
+      "Regra operacional — separação dos destinos em Sala de Aula"
+    ],
+    "nodeId": "e_sala"
+  }
+}

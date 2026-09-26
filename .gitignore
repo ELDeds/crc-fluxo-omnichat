@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.qa/
+.DS_Store
+# Documentos originais com capturas/dados pessoais ficam fora da publicação.
+docs/fontes-locais/

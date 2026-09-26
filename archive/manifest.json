@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "v4",
+    "title": "V4 — versão original",
+    "date": null,
+    "description": "Estrutura original, anterior à consolidação documental e às simplificações.",
+    "sha256": "698e4bd1f8292b8c806b448963489900c267fbbb50d338940844ec0ed6b0a23c"
+  },
+  {
+    "slug": "redesign-1",
+    "title": "Redesenho 1",
+    "date": "2026-09-25",
+    "description": "Consolidação em cinco áreas, procedimentos compartilhados, busca e painel de referências.",
+    "sha256": "98cf7c6e35b851f7471fd481e3b1836839a363c4b1abf528a9ba67037e5a35d4"
+  },
+  {
+    "slug": "redesign-2",
+    "title": "Redesenho 2",
+    "date": "2026-09-25",
+    "description": "Redução para 27 blocos e adoção do mapa de conhecimento, com detalhes na busca e no painel.",
+    "sha256": "bfe4804268ab40d0e2c70838936ebb392bff4696630b460e7614bb46549cbc6d"
+  },
+  {
+    "slug": "v1.0",
+    "title": "V1.0 — versão aprovada",
+    "date": "2026-09-25",
+    "description": "Layout ortogonal com 28 blocos e separação entre suporte comum em sala e encaminhamento de projetor.",
+    "sha256": "38bbf382d452d97b67e59314167db37365360027aa9df65fdd4eb9e4ee0d66fd"
+  }
+]
